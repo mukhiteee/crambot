@@ -1,0 +1,43 @@
+request = {
+"courses" : 
+    [
+        {
+            "courseCode" : "String",
+            "courseTitle" : "String",
+            "credit" : "Number",
+        },
+        {
+            "courseCode" : "String",
+            "courseTitle" : "String",
+            "credit" : "Number",
+        },
+        {
+            "courseCode" : "String",
+            "courseTitle" : "String",
+            "credit" : "Number",
+        }
+    ],
+"totalCredits" : "Number",
+"studyHours" : "Number" || null,
+"excludedDays" : ["String"] || null,
+"studyTime" : "String",
+"duration" : "String" || null,
+"prompt" : ""
+}
+
+
+Difficulty of a course is countributed by the credit unit and also the course title should be analyzed to get hat the course is all about and it's complexity...
+Credit Unit is directly proportional to difficulty and time reqiured for study. But this contributes only 50% of the difficulty score. Research should be done based on course title to get the remaining 50%.
+Credit Unit is optional, if !credit unit, then diffuclty depends 100% on course title research..
+A difficulty score is given to each course. 
+If !availabe study hours per day. Total difficulty score is proporional to available study time.
+If days can't study exist, the day should be excluded from the response.
+Preferred study time doesn't mean study should be only at that time.. If course load is pretty much, other periods should be allocated.
+If !preferred study time, random but higher probability of evening.
+If timetable duration = Weekly, study days = everyday-days can't study...
+If monthly, 4 Weeks - day's can't study
+
+This is hat I got, you should build on it to make it ready, and lit!
+
+JSON response preferably, it is easier to convert to Image/PDF
+The student name should not be be sent through the API, it should be kept and used for the rendering of the card. Name input is optional, if !name, then it should be empty..

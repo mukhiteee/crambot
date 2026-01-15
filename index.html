@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CramBot - AI-powered study timetable generator for students. Create personalized exam schedules in seconds.">
+    <meta name="keywords" content="study planner, timetable generator, AI study tool, exam preparation, student productivity">
+    <title>CramBot - AI Study Timetable Generator | Cram Smarter, Not Harder</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+</head>
+<body>
+    
+    <!-- ============================================
+         HEADER / NAVIGATION
+         ============================================ -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-wrapper">
+                <!-- Logo -->
+                <div class="brand">
+                    <h1 class="brand-name">
+                        <span class="brand-icon">🧠</span>
+                        CramBot
+                    </h1>
+                    <p class="brand-tagline">AI-Powered Study Planner</p>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button 
+                        class="btn-icon theme-toggle" 
+                        id="theme-toggle" 
+                        aria-label="Toggle dark/light mode"
+                        title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+
+                    <!-- Buy Me a Coffee -->
+                    <a 
+                        href="https://www.buymeacoffee.com/username" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="btn btn-coffee">
+                        <span class="btn-icon-left">☕</span>
+                        <span class="btn-text">Buy me a coffee</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         HERO SECTION
+         ============================================ -->
+    <section class="hero">
+        <div class="container hero-container">
+            <!-- Main Headline -->
+            <div class="hero-content">
+                <!-- Badge -->
+                <div class="hero-badge">
+                    <span class="badge-icon">✨</span>
+                    <span class="badge-text">Free Forever • No Sign-up Required</span>
+                </div>
+
+                <!-- Main Heading -->
+                <h2 class="hero-title">
+                    <span class="title-line">Stop Guessing.</span>
+                    <span class="title-line title-line-highlight">Start Cramming Smarter.</span>
+                </h2>
+
+                <!-- Problem Statement -->
+                <div class="hero-problem">
+                    <p class="problem-text">
+                        <span class="problem-icon">😰</span>
+                        Exam season got you overwhelmed? Juggling multiple courses with no clear plan?
+                    </p>
+                </div>
+
+                <!-- Solution Statement -->
+                <div class="hero-solution">
+                    <p class="solution-text">
+                        <span class="solution-highlight">CramBot</span> uses AI to generate a personalized study timetable 
+                        in <strong>seconds</strong>—tailored to YOUR courses, YOUR schedule, YOUR exam dates.
+                    </p>
+                </div>
+
+                <!-- CTA / Stats Row -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">10s</div>
+                        <div class="stat-label">Setup Time</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Free Forever</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">AI</div>
+                        <div class="stat-label">Powered</div>
+                    </div>
+                </div>
+
+                <!-- Scroll Indicator -->
+                <div class="hero-scroll">
+                    <span class="scroll-text">Get Your Timetable Below</span>
+                    <span class="scroll-arrow">↓</span>
+                </div>
+            </div>
+
+            <!-- Hero Visual/Illustration (Optional placeholder) -->
+            <div class="hero-visual">
+                <div class="visual-card">
+                    <div class="visual-header">
+                        <div class="visual-dot"></div>
+                        <div class="visual-dot"></div>
+                        <div class="visual-dot"></div>
+                    </div>
+                    <div class="visual-content">
+                        <div class="visual-line"></div>
+                        <div class="visual-line"></div>
+                        <div class="visual-line visual-line-short"></div>
+                        <div class="visual-highlight">
+                            <span>📚</span>
+                            <span>Your Personalized Schedule</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         INPUT FORM SECTION
+         ============================================ -->
+    <section class="input-section" id="input-section">
+        <div class="container">
+            <div class="section-header">
+                <h3 class="section-title">Generate Your Timetable</h3>
+                <p class="section-subtitle">Fill in your course details and let AI do the magic ✨</p>
+            </div>
+
+            <div class="form-card">
+                <form id="timetable-form">
+                    
+                    <!-- Student Name -->
+                    <div class="form-group">
+                        <label for="student-name" class="form-label">
+                            Your Name
+                            <span class="label-required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="student-name" 
+                            class="form-input"
+                            placeholder="e.g., John Doe"
+                            required>
+                    </div>
+
+                    <!-- Courses Section -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Your Courses
+                            <span class="label-required">*</span>
+                        </label>
+                        <div id="course-list" class="course-list">
+                            <!-- Courses will be dynamically added here -->
+                        </div>
+                        <button 
+                            type="button" 
+                            class="btn btn-secondary btn-add-course" 
+                            id="add-course-btn">
+                            <span class="btn-icon-left">+</span>
+                            <span class="btn-text">Add Another Course</span>
+                        </button>
+                    </div>
+
+                    <!-- Optional Preferences Section -->
+                    <div class="optional-section">
+                        <div class="optional-header">
+                            <h4 class="optional-title">
+                                <span class="optional-icon">⚙️</span>
+                                Optional Preferences
+                            </h4>
+                            <p class="optional-subtitle">Customize your timetable (or leave blank for AI recommendations)</p>
+                        </div>
+
+                        <!-- Study Hours Per Day -->
+                        <div class="form-group">
+                            <label for="study-hours" class="form-label">
+                                Available Study Hours Per Day
+                                <span class="label-optional">(Optional)</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                id="study-hours" 
+                                class="form-input"
+                                min="1" 
+                                max="16"
+                                placeholder="Leave empty for AI recommendation">
+                            <div class="form-hint">
+                                💡 If left empty, AI will recommend optimal study hours based on your course load.
+                            </div>
+                        </div>
+
+                        <!-- Days You Can't Study -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Days You Can't Study
+                                <span class="label-optional">(Optional)</span>
+                            </label>
+                            <div class="checkbox-grid">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-mon" value="Monday">
+                                    <label for="day-mon">Monday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-tue" value="Tuesday">
+                                    <label for="day-tue">Tuesday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-wed" value="Wednesday">
+                                    <label for="day-wed">Wednesday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-thu" value="Thursday">
+                                    <label for="day-thu">Thursday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-fri" value="Friday">
+                                    <label for="day-fri">Friday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-sat" value="Saturday">
+                                    <label for="day-sat">Saturday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="day-sun" value="Sunday">
+                                    <label for="day-sun">Sunday</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Best Study Time -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Best Study Time
+                                <span class="label-optional">(Optional)</span>
+                            </label>
+                            <div class="radio-grid">
+                                <div class="radio-item">
+                                    <input type="radio" id="time-morning" name="study-time" value="Morning">
+                                    <label for="time-morning">
+                                        <span class="radio-icon">🌅</span>
+                                        <span class="radio-text">Morning</span>
+                                    </label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="time-afternoon" name="study-time" value="Afternoon">
+                                    <label for="time-afternoon">
+                                        <span class="radio-icon">☀️</span>
+                                        <span class="radio-text">Afternoon</span>
+                                    </label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="time-evening" name="study-time" value="Evening" checked>
+                                    <label for="time-evening">
+                                        <span class="radio-icon">🌆</span>
+                                        <span class="radio-text">Evening</span>
+                                    </label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="time-night" name="study-time" value="Night">
+                                    <label for="time-night">
+                                        <span class="radio-icon">🌙</span>
+                                        <span class="radio-text">Night</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timetable Duration -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Timetable Duration
+                                <span class="label-required">*</span>
+                            </label>
+                            <div class="radio-grid radio-grid-compact">
+                                <div class="radio-item">
+                                    <input type="radio" id="duration-weekly" name="duration" value="Weekly" checked>
+                                    <label for="duration-weekly">
+                                        <span class="radio-icon">📅</span>
+                                        <span class="radio-text">Weekly</span>
+                                    </label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="duration-monthly" name="duration" value="Monthly">
+                                    <label for="duration-monthly">
+                                        <span class="radio-icon">📆</span>
+                                        <span class="radio-text">Monthly</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary btn-generate" 
+                        id="generate-btn">
+                        <span class="btn-icon-left">🚀</span>
+                        <span class="btn-text">Generate My Timetable</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         LOADING STATE
+         ============================================ -->
+    <section class="loading-section" id="loading-section">
+        <div class="container">
+            <div class="loading-card">
+                <div class="loading-spinner"></div>
+                <h3 class="loading-title" id="loading-message">📊 Analyzing your courses...</h3>
+                <p class="loading-subtitle" id="loading-submessage">This will take just a moment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         ERROR STATE
+         ============================================ -->
+    <section class="error-section" id="error-section">
+        <div class="container">
+            <div class="error-card">
+                <div class="error-icon">❌</div>
+                <h3 class="error-title">Oops! Something went wrong</h3>
+                <p class="error-message" id="error-message"></p>
+                <button class="btn btn-secondary" onclick="location.reload()">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         OUTPUT / RESULT SECTION
+         ============================================ -->
+    <section class="output-section" id="output-section">
+        <div class="container">
+            <!-- Output Header -->
+            <div class="output-header">
+                <h3 class="output-title">Your Personalized Timetable 🎉</h3>
+                <p class="output-subtitle">Study smarter with your AI-generated schedule</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="output-actions">
+                <button class="btn btn-secondary" id="export-image-btn">
+                    <span class="btn-icon-left">📷</span>
+                    <span class="btn-text">Export as Image</span>
+                </button>
+                <button class="btn btn-secondary" id="export-pdf-btn">
+                    <span class="btn-icon-left">📄</span>
+                    <span class="btn-text">Export as PDF</span>
+                </button>
+                <a 
+                    href="https://www.buymeacoffee.com/username" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="btn btn-coffee">
+                    <span class="btn-icon-left">☕</span>
+                    <span class="btn-text">Support CramBot</span>
+                </a>
+            </div>
+
+            <!-- Timetable Display -->
+            <div class="timetable-wrapper">
+                <div id="timetable-display" class="timetable-display">
+                    <!-- AI-generated timetable will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         BLOG / RESOURCES SECTION
+         ============================================ -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="section-header">
+                <h3 class="section-title">Study Tips & Resources</h3>
+                <p class="section-subtitle">Learn proven strategies to maximize your study sessions</p>
+            </div>
+
+            <div class="blog-grid">
+                <!-- Blog Card 1 -->
+                <article class="blog-card">
+                    <a href="#" class="blog-link">
+                        <div class="blog-image">
+                            <span class="blog-emoji">📖</span>
+                        </div>
+                        <div class="blog-content">
+                            <h4 class="blog-title">How to Use Spaced Repetition Effectively</h4>
+                            <p class="blog-excerpt">
+                                Master the art of long-term retention with proven techniques that help you remember more with less effort.
+                            </p>
+                            <span class="blog-cta">Read More →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Blog Card 2 -->
+                <article class="blog-card">
+                    <a href="#" class="blog-link">
+                        <div class="blog-image">
+                            <span class="blog-emoji">⏰</span>
+                        </div>
+                        <div class="blog-content">
+                            <h4 class="blog-title">The Pomodoro Technique for Students</h4>
+                            <p class="blog-excerpt">
+                                Break your study sessions into focused intervals to maximize productivity and avoid burnout.
+                            </p>
+                            <span class="blog-cta">Read More →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Blog Card 3 -->
+                <article class="blog-card">
+                    <a href="#" class="blog-link">
+                        <div class="blog-image">
+                            <span class="blog-emoji">🧠</span>
+                        </div>
+                        <div class="blog-content">
+                            <h4 class="blog-title">Active Recall: Study Smarter, Not Harder</h4>
+                            <p class="blog-excerpt">
+                                Learn why testing yourself is the most effective way to study for exams.
+                            </p>
+                            <span class="blog-cta">Read More →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Blog Card 4 -->
+                <article class="blog-card">
+                    <a href="#" class="blog-link">
+                        <div class="blog-image">
+                            <span class="blog-emoji">📝</span>
+                        </div>
+                        <div class="blog-content">
+                            <h4 class="blog-title">Creating the Perfect Study Environment</h4>
+                            <p class="blog-excerpt">
+                                Optimize your workspace for maximum focus and minimal distractions.
+                            </p>
+                            <span class="blog-cta">Read More →</span>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Blog Card 5 -->
+                <article class="blog-card">
+                    <a href="#" class="blog-link">
+                        <div class="blog-image">
+                            <span class="blog-emoji">💤</span>
+                        </div>
+                        <div class="blog-content">
+                            <h4 class="blog-title">Why Sleep is Your Secret Weapon</h4>
+                            <p class="blog-excerpt">
+                                Discover how proper rest dramatically improves memory consolidation and exam performance.
+                            </p>
+                            <span class="blog-cta">Read More →</span>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="site-footer">
+        <div class="container">
+            <!-- Footer Grid -->
+            <div class="footer-grid">
+                <!-- Column 1: About -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">CramBot</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 2: Legal -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                        <li><a href="#cookies">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Resources -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#study-tips">Study Tips</a></li>
+                        <li><a href="#api-docs">API Documentation</a></li>
+                        <li><a href="#changelog">Changelog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Connect -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:hello@crambot.com">Email Us</a></li>
+                        <li><a href="#feedback">Feedback</a></li>
+                        <li><a href="https://www.buymeacoffee.com/username">Support Us</a></li>
+                        <li><a href="#newsletter">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-credits">
+                    <p>Created with 💜 by <strong>Alex Johnson</strong></p>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="footer-socials">
+                    <a href="https://twitter.com/username" target="_blank" rel="noopener" aria-label="Twitter" title="Twitter">
+                        <span>𝕏</span>
+                    </a>
+                    <a href="https://github.com/username" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+                        <span>🐙</span>
+                    </a>
+                    <a href="https://linkedin.com/in/username" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+                        <span>💼</span>
+                    </a>
+                    <a href="https://portfolio.com" target="_blank" rel="noopener" aria-label="Portfolio" title="Portfolio">
+                        <span>🌐</span>
+                    </a>
+                </div>
+
+                <div class="footer-copyright">
+                    <p>© 2026 CramBot. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         SCRIPTS
+         ============================================ -->
+    <script src="app.js" defer></script>
+</body>
+</html>
