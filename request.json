@@ -41,3 +41,6 @@ This is hat I got, you should build on it to make it ready, and lit!
 
 JSON response preferably, it is easier to convert to Image/PDF
 The student name should not be be sent through the API, it should be kept and used for the rendering of the card. Name input is optional, if !name, then it should be empty..
+AI Should generate a motivational quote related to studying and exams, and it should be placed at the bottom of the timetable.
+Do you think there is a need to give AI a sample of hat e ant in the request? I doubt!
+But let's add it for efficiency by the ay

@@ -6,12 +6,14 @@
     <meta name="description" content="CramBot - AI-powered study timetable generator for students. Create personalized exam schedules in seconds.">
     <meta name="keywords" content="study planner, timetable generator, AI study tool, exam preparation, student productivity">
     <title>CramBot - AI Study Timetable Generator | Cram Smarter, Not Harder</title>
-    <link rel="stylesheet" href="style.css">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
     
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js" defer></script>
@@ -310,6 +312,28 @@
                                         <span class="radio-icon">📆</span>
                                         <span class="radio-text">Monthly</span>
                                     </label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="duration-custom" name="duration" value="Custom">
+                                    <label for="duration-custom">
+                                        <span class="radio-icon">🗓️</span>
+                                        <span class="radio-text">Custom</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Date Range (Hidden by default) -->
+                        <div class="form-group" id="custom-dates" style="display: none;">
+                            <label class="form-label">Custom Date Range</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div>
+                                    <label class="form-label" style="font-size: 0.85rem; margin-bottom: 0.5rem;">Start Date</label>
+                                    <input type="date" id="start-date" class="form-input">
+                                </div>
+                                <div>
+                                    <label class="form-label" style="font-size: 0.85rem; margin-bottom: 0.5rem;">End Date</label>
+                                    <input type="date" id="end-date" class="form-input">
                                 </div>
                             </div>
                         </div>
