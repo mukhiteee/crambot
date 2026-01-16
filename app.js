@@ -11,7 +11,7 @@
     // ============================================
     const GEMINI_API_KEY = 'AIzaSyBZgfnZQvgqLNNTTnwHWVO0MCCSx_cUVnw'; // <-- ADD YOUR API KEY HERE
     // Change this line in your code:
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent';
+    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent';
 
     // ============================================
     // THEME TOGGLE
