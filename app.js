@@ -11,7 +11,7 @@
     // ============================================
     
     const CONFIG = {
-        GROQ_API_KEY: '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',
+        
         GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions',
         MODEL: 'llama-3.3-70b-versatile',
         RATE_LIMIT_MINUTES: 10
