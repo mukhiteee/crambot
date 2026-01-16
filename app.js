@@ -1,6 +1,6 @@
 // ============================================
 // CRAMBOT - COMPLETE JAVASCRIPT
-// With AI Generation & Timetable Rendering
+// With Groq AI Generation & Timetable Rendering
 // ============================================
 
 (function() {
@@ -9,9 +9,8 @@
     // ============================================
     // CONFIGURATION
     // ============================================
-    const GEMINI_API_KEY = 'AIzaSyBZgfnZQvgqLNNTTnwHWVO0MCCSx_cUVnw'; // <-- ADD YOUR API KEY HERE
-    // Change this line in your code:
-    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent';
+    const GROQ_API_KEY = 'PASTE_YOUR_GROQ_KEY_HERE'; // Get from https://console.groq.com
+    const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
     // ============================================
     // THEME TOGGLE
@@ -187,10 +186,10 @@
         let studyHoursText, studyHoursRule;
         if (studyHours) {
             studyHoursText = `${studyHours} hours`;
-            studyHoursRule = `Distribute approximately ${studyHours} hours per day across courses based on difficulty scores.`;
+            studyHoursRule = `Distribute approximately ${studyHours} hours per day across courses based on difficulty scores. Higher difficulty courses get proportionally more time.`;
         } else {
             studyHoursText = 'Not specified (AI should recommend)';
-            studyHoursRule = 'Calculate recommended study hours based on total difficulty score of all courses. Recommend between 2-8 hours per day depending on course load.';
+            studyHoursRule = 'Calculate recommended study hours based on total difficulty score of all courses. Recommend between 2-8 hours per day depending on course load. Higher difficulty = more daily hours.';
         }
 
         // Excluded days logic
@@ -200,10 +199,10 @@
         let studyTimeText, studyTimeRule;
         if (studyTime) {
             studyTimeText = studyTime;
-            studyTimeRule = `Prioritize ${studyTime} time slots (assign ~60-70% of sessions here). If course load is heavy, use other time periods as needed.`;
+            studyTimeRule = `${studyTime} is the PREFERRED time (not mandatory). Aim for 60-70% of sessions during ${studyTime}. If difficulty scores are high or total study time increases, distribute sessions across other times of day to avoid jam-packing. Balance is key.`;
         } else {
             studyTimeText = 'Not specified';
-            studyTimeRule = 'Use Evening as default preference (60-70% of sessions), but distribute flexibly based on course load. Evening = 4PM-8PM.';
+            studyTimeRule = 'Use Evening as default preference (60-70% of sessions), but distribute flexibly across the day based on course load. Avoid scheduling all sessions at the same time. Evening = 4PM-8PM.';
         }
 
         // Duration logic
@@ -237,9 +236,11 @@ Analyze each course using a difficulty scoring system (0-100):
    - Typical study requirements (problem-solving heavy vs reading heavy)
    - Prerequisite knowledge needed
    
-3. TIME ALLOCATION:
-   - Higher difficulty courses get more study time
-   - Distribute study hours proportionally to difficulty scores
+3. TIME ALLOCATION BASED ON DIFFICULTY:
+   - Higher difficulty courses get MORE study time and MORE frequent sessions
+   - Lower difficulty courses (score < 40) may NOT require daily study - schedule 2-3 times per week
+   - Medium difficulty courses (40-70) should be scheduled 4-5 times per week
+   - High difficulty courses (70+) should be scheduled 5-7 times per week
 
 ===== STUDENT DATA =====
 COURSES:
@@ -251,26 +252,48 @@ PREFERRED STUDY TIME: ${studyTimeText}
 TIMETABLE DURATION: ${duration}
 
 ===== SCHEDULING RULES =====
-1. STUDY HOURS CALCULATION:
+
+1. MINIMUM TIME PER COURSE (CRITICAL):
+   For each course with credit units:
+   - WEEKLY study time MUST be at least: Credit Unit × 60 minutes
+   - Example: 3-credit course = minimum 180 minutes (3 hours) per week
+   - This is the ABSOLUTE MINIMUM - higher difficulty courses should get MORE time
+   - Distribute this time across multiple sessions (not one long session)
+
+2. DIFFICULTY-BASED FREQUENCY:
+   - Low difficulty (< 40): Schedule 2-3 times per week (not daily)
+   - Medium difficulty (40-70): Schedule 4-5 times per week
+   - High difficulty (70+): Schedule 5-7 times per week
+   - Higher difficulty = more study time AND more frequent sessions
+
+3. STUDY HOURS CALCULATION:
    ${studyHoursRule}
 
-2. DAY EXCLUSION:
+4. DAY EXCLUSION:
    - DO NOT schedule any study sessions on: ${excludedDaysText}
    - Only use available days in the timetable
 
-3. TIME PREFERENCE:
+5. TIME PREFERENCE (FLEXIBLE):
    ${studyTimeRule}
 
-4. DURATION LOGIC:
+6. AVOID TIME JAM-PACKING:
+   - DO NOT schedule all sessions at the same time of day
+   - Spread sessions throughout the day for better retention and breathing space
+   - If total daily study time > 4 hours, MUST use multiple time slots (morning, afternoon, evening)
+   - Leave gaps between sessions for rest and processing
+   - Example: Don't schedule all 5 courses from 4PM-9PM. Instead: 2 courses morning, 2 afternoon, 1 evening
+
+7. DURATION LOGIC:
    ${durationRule}
 
-5. GENERAL CONSTRAINTS:
-   - Multiple courses CAN be scheduled per day
-   - Include 10-15 minute breaks between study sessions
+8. GENERAL CONSTRAINTS:
+   - Multiple courses CAN be scheduled per day (but spread across different times)
+   - Include 10-15 minute breaks between consecutive study sessions
    - Vary study times to prevent burnout
    - Include specific start and end times (e.g., "4:00 PM - 6:00 PM")
-   - Balance course rotation (don't schedule same course 3 days in a row)
+   - Balance course rotation (don't schedule same course 3 days in a row if low difficulty)
    - Make the schedule realistic and sustainable
+   - Sessions should be 45-120 minutes long (not too short, not marathons)
 
 ===== OUTPUT FORMAT =====
 Return ONLY valid JSON in this EXACT format (no markdown, no code blocks, no explanations):
@@ -279,15 +302,21 @@ Return ONLY valid JSON in this EXACT format (no markdown, no code blocks, no exp
   "timetable": [
     {
       "day": "Monday",
-      "startTime": "4:00 PM",
-      "endTime": "6:00 PM",
+      "startTime": "9:00 AM",
+      "endTime": "10:30 AM",
       "courseCode": "CSC 201"
     },
     {
       "day": "Monday",
-      "startTime": "6:15 PM",
-      "endTime": "7:30 PM",
+      "startTime": "4:00 PM",
+      "endTime": "6:00 PM",
       "courseCode": "MTH 101"
+    },
+    {
+      "day": "Tuesday",
+      "startTime": "10:00 AM",
+      "endTime": "11:30 AM",
+      "courseCode": "PHY 102"
     }
   ],
   "motivationalQuote": "Success is the sum of small efforts repeated day in and day out. - Robert Collier"
@@ -308,10 +337,14 @@ EXAMPLE OUTPUT (for reference):
 
 ===== CRITICAL REQUIREMENTS =====
 1. Return ONLY the JSON object (no markdown formatting, no \`\`\`json blocks)
-2. Include a motivational quote related to studying, exams, or academic success
-3. Ensure all times are realistic (no 12-hour study marathons)
-4. Respect excluded days absolutely
-5. For monthly or custom durations, use actual dates in the 'day' field`;
+2. Each course MUST meet minimum weekly time: Credit Unit × 60 minutes
+3. Low difficulty courses should NOT appear daily - space them out
+4. DO NOT jam-pack all sessions at the same time - spread throughout the day
+5. Include a motivational quote related to studying, exams, or academic success
+6. Ensure all times are realistic (no 12-hour study marathons)
+7. Respect excluded days absolutely
+8. For monthly or custom durations, use actual dates in the 'day' field
+9. Preferred study time is a PREFERENCE (60-70%), not a mandate - use other times when needed`;
 
         return prompt;
     }
@@ -486,8 +519,8 @@ EXAMPLE OUTPUT (for reference):
         if (!formData) return;
 
         // Check API key
-        if (GEMINI_API_KEY === 'YOUR_API_KEY_HERE') {
-            showError('Please add your Gemini API key in the JavaScript file (crambot.js)');
+        if (GROQ_API_KEY === 'PASTE_YOUR_GROQ_KEY_HERE') {
+            showError('Please add your Groq API key in the JavaScript file. Get it from https://console.groq.com');
             return;
         }
 
@@ -499,30 +532,44 @@ EXAMPLE OUTPUT (for reference):
         startLoadingAnimation();
 
         try {
-            // Call Gemini API
-            const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+            // Call Groq API
+            const response = await fetch(GROQ_API_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Authorization': `Bearer ${GROQ_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: prompt }]
-                    }]
+                    model: "llama-3.3-70b-versatile",
+                    messages: [
+                        {
+                            role: "system",
+                            content: "You are an expert academic study planner. Generate responses ONLY in valid JSON format with no additional text, markdown, or code blocks. Return pure JSON only."
+                        },
+                        {
+                            role: "user",
+                            content: prompt
+                        }
+                    ],
+                    temperature: 0.7,
+                    response_format: { type: "json_object" }
                 })
             });
 
             stopLoadingAnimation();
 
             if (!response.ok) {
-                throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+                const errorData = await response.json();
+                throw new Error(`API Error: ${response.status} - ${errorData.error?.message || response.statusText}`);
             }
 
             const data = await response.json();
-            const aiResponse = data.candidates[0].content.parts[0].text;
+            const aiResponse = data.choices[0].message.content;
 
             // Parse JSON response
             let timetableData;
             try {
-                // Clean up response (remove markdown code blocks if present)
+                // Clean up response (remove any potential markdown)
                 const cleanedResponse = aiResponse
                     .replace(/```json\n?/g, '')
                     .replace(/```\n?/g, '')
@@ -657,7 +704,5 @@ EXAMPLE OUTPUT (for reference):
     // ============================================
     // INITIALIZATION
     // ============================================
-    console.log('%c🧠 CramBot Fully Initialized', 'color: #6366f1; font-size: 20px; font-weight: bold;');
-    console.log('%cAI Generation Ready! Add your API key to start.', 'color: #8b5cf6; font-size: 14px;');
 
 })();
