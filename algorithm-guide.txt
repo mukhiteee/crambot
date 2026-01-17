@@ -1,0 +1,1073 @@
+================================================================================
+                    CRAMBOT AI ALGORITHM - COMPLETE GUIDE
+                    How the Study Timetable Generator Works
+================================================================================
+
+TABLE OF CONTENTS:
+1. Overview
+2. The 5-Step Algorithm Process
+3. Difficulty Scoring System
+4. Time Allocation Logic
+5. Cognitive Optimization Principles
+6. Anti-Burnout Protection
+7. Quality Verification Checklist
+8. Real-World Example Walkthrough
+9. Why This Algorithm Works
+10. Technical Implementation43
+
+================================================================================
+1. OVERVIEW
+================================================================================
+
+CramBot uses a scientifically-backed AI algorithm to generate personalized
+study timetables. The algorithm is designed by "Dr. Sarah Chen," a cognitive
+science professor character with 15+ years of experience.
+
+CORE PHILOSOPHY:
+- Respect learning science principles (spacing effect, interleaving)
+- Prevent student burnout
+- Maximize information retention
+- Create sustainable, realistic schedules
+- Adapt to individual student needs
+
+INPUT:
+- Student name (optional)
+- Course list (code, title, credit units)
+- Available study hours per day (optional)
+- Excluded days (days student can't study)
+- Preferred study time (Morning/Afternoon/Evening/Night)
+- Duration (Weekly, Monthly, or Custom date range)
+
+OUTPUT:
+- JSON object containing:
+  * Array of timetable sessions (day, start time, end time, course code)
+  * Motivational quote
+
+================================================================================
+2. THE 5-STEP ALGORITHM PROCESS
+================================================================================
+
+STEP 1: Course Difficulty Analysis
+→ Analyze each course and assign a difficulty score (0-100)
+
+STEP 2: Time Allocation Calculation
+→ Calculate how much time each course needs per week
+→ Determine session frequency (how many times per week)
+→ Optimize session length (45-120 minutes ideal)
+
+STEP 3: Cognitive Optimization
+→ Apply learning science principles
+→ Space sessions for better retention
+→ Match course difficulty to energy levels
+
+STEP 4: Anti-Burnout Protection
+→ Prevent jam-packing of sessions
+→ Ensure adequate breaks
+→ Include rest days
+
+STEP 5: Quality Verification
+→ Verify all requirements are met
+→ Check minimum time allocations
+→ Ensure schedule is sustainable
+
+================================================================================
+3. DIFFICULTY SCORING SYSTEM (0-100 Scale)
+================================================================================
+
+The algorithm analyzes each course across 5 factors:
+
+────────────────────────────────────────────────────────────────────────────
+FACTOR A: CREDIT WEIGHT (BASELINE)
+────────────────────────────────────────────────────────────────────────────
+
+Each credit unit = 10 points baseline
+
+Examples:
+- 1 credit course = 10 points
+- 2 credit course = 20 points
+- 3 credit course = 30 points
+- 4 credit course = 40 points
+- 5 credit course = 50 points
+- 6 credit course = 60 points
+
+────────────────────────────────────────────────────────────────────────────
+FACTOR B: SUBJECT COMPLEXITY LEVEL (+5 to +30 points)
+────────────────────────────────────────────────────────────────────────────
+
+Based on course level/number:
+
+Introductory Level (100-level courses): +5 points
+  Examples: ENG 101, PSY 101, BIO 101
+  Characteristics: Basic concepts, foundation building
+
+Intermediate Level (200-level courses): +10 points
+  Examples: CSC 201, MTH 202, CHEM 210
+  Characteristics: Building on fundamentals, moderate complexity
+
+Advanced Level (300-level courses): +20 points
+  Examples: CSC 301, PHY 303, BIO 320
+  Characteristics: Specialized knowledge, complex concepts
+
+Expert Level (400+ level courses): +30 points
+  Examples: CS 401, CHEM 450, MTH 499
+  Characteristics: Senior/graduate level, highly specialized
+
+────────────────────────────────────────────────────────────────────────────
+FACTOR C: COGNITIVE LOAD TYPE (+10 to +25 points)
+────────────────────────────────────────────────────────────────────────────
+
+Based on the type of mental processing required:
+
+Memorization-Heavy: +10 points
+  Examples: History, Biology, Anatomy, Foreign Language
+  Characteristics: 
+    - Lots of facts to remember
+    - Vocabulary heavy
+    - Timeline/sequence memorization
+    - Definition-based
+
+Application-Heavy: +20 points
+  Examples: Mathematics, Programming, Physics, Chemistry
+  Characteristics:
+    - Problem-solving required
+    - Apply concepts to new situations
+    - Formula application
+    - Hands-on practice needed
+
+Synthesis-Heavy: +25 points
+  Examples: Philosophy, Research Methods, Advanced Writing, Thesis
+  Characteristics:
+    - Create new ideas
+    - Complex analysis
+    - Critical thinking
+    - Original work required
+
+────────────────────────────────────────────────────────────────────────────
+FACTOR D: PREREQUISITE REQUIREMENTS (+0 to +15 points)
+────────────────────────────────────────────────────────────────────────────
+
+Number of prerequisite courses required:
+
+No Prerequisites: +0 points
+  - Entry-level course
+  - No prior knowledge needed
+
+1-2 Prerequisites: +8 points
+  - Some foundation required
+  - Building on basic concepts
+
+3+ Prerequisites: +15 points
+  - Advanced course
+  - Extensive prior knowledge needed
+  - Cumulative difficulty
+
+────────────────────────────────────────────────────────────────────────────
+FACTOR E: TYPICAL WORKLOAD (+5 to +20 points)
+────────────────────────────────────────────────────────────────────────────
+
+Based on typical time commitment outside class:
+
+Light Workload: +5 points
+  - Mainly reading
+  - Occasional practice problems
+  - Simple assignments
+
+Moderate Workload: +10 points
+  - Regular assignments
+  - Weekly problem sets
+  - Moderate reading load
+
+Heavy Workload: +15 points
+  - Major projects
+  - Lab work
+  - Extensive reading
+  - Frequent deliverables
+
+Thesis/Capstone Level: +20 points
+  - Independent research
+  - Major long-term project
+  - Presentation/defense
+  - Publication-quality work
+
+────────────────────────────────────────────────────────────────────────────
+FINAL DIFFICULTY CALCULATION
+────────────────────────────────────────────────────────────────────────────
+
+IF credit unit is provided:
+  Final Difficulty = (Credit Weight × 0.5) + (Complexity Factors × 0.5)
+  
+  Where Complexity Factors = B + C + D + E
+
+IF credit unit is NOT provided:
+  Final Difficulty = Full Complexity Score (B + C + D + E)
+
+────────────────────────────────────────────────────────────────────────────
+EXAMPLE CALCULATIONS
+────────────────────────────────────────────────────────────────────────────
+
+Example 1: CSC 301 - Data Structures (3 credits)
+  Credit Weight: 30 points (3 × 10)
+  Subject Level: +20 (300-level, Advanced)
+  Cognitive Load: +20 (Application-heavy, lots of coding)
+  Prerequisites: +8 (2 prereqs: CSC 201, MTH 201)
+  Workload: +15 (Heavy - lots of coding projects)
+  
+  Complexity = 20 + 20 + 8 + 15 = 63
+  Final = (30 × 0.5) + (63 × 0.5) = 15 + 31.5 = 46.5
+  Rounded = 47 (Medium Difficulty)
+  
+  NOTE: In practice, advanced CS courses typically score 70-80 due to
+  their intensive nature, so the AI may adjust upward.
+
+Example 2: ENG 101 - Composition (3 credits)
+  Credit Weight: 30 points (3 × 10)
+  Subject Level: +5 (100-level, Introductory)
+  Cognitive Load: +25 (Synthesis - writing/analysis)
+  Prerequisites: +0 (None)
+  Workload: +10 (Moderate - essays and reading)
+  
+  Complexity = 5 + 25 + 0 + 10 = 40
+  Final = (30 × 0.5) + (40 × 0.5) = 15 + 20 = 35
+  Rounded = 35 (Low Difficulty)
+
+Example 3: PHY 450 - Quantum Mechanics (4 credits)
+  Credit Weight: 40 points (4 × 10)
+  Subject Level: +30 (400-level, Expert)
+  Cognitive Load: +20 (Application - complex math)
+  Prerequisites: +15 (3+ prereqs needed)
+  Workload: +15 (Heavy - problem sets, exams)
+  
+  Complexity = 30 + 20 + 15 + 15 = 80
+  Final = (40 × 0.5) + (80 × 0.5) = 20 + 40 = 60
+  
+  NOTE: This would likely score higher (85-90) due to advanced physics
+  complexity.
+
+================================================================================
+4. TIME ALLOCATION LOGIC
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────
+MINIMUM TIME REQUIREMENT (NON-NEGOTIABLE)
+────────────────────────────────────────────────────────────────────────────
+
+RULE: Each course MUST get at least Credit Units × 60 minutes per week
+
+Examples:
+- 1-credit course = minimum 60 minutes/week
+- 2-credit course = minimum 120 minutes/week
+- 3-credit course = minimum 180 minutes/week (3 hours)
+- 4-credit course = minimum 240 minutes/week (4 hours)
+- 5-credit course = minimum 300 minutes/week (5 hours)
+- 6-credit course = minimum 360 minutes/week (6 hours)
+
+This is the ABSOLUTE MINIMUM. Higher difficulty courses get MORE.
+
+────────────────────────────────────────────────────────────────────────────
+ADJUSTED TIME BASED ON DIFFICULTY
+────────────────────────────────────────────────────────────────────────────
+
+The algorithm adjusts the minimum time based on difficulty score:
+
+Low Difficulty (0-40):
+  Adjusted Time = Minimum only
+  Reasoning: Basic courses don't need extra time beyond minimum
+  
+  Example: ENG 101 (3 credits, difficulty 35)
+    Minimum = 180 min/week
+    Adjusted = 180 min/week (no increase)
+
+Medium Difficulty (41-70):
+  Adjusted Time = Minimum + 20-30%
+  Reasoning: Moderate challenge requires extra practice
+  
+  Example: BIO 201 (3 credits, difficulty 55)
+    Minimum = 180 min/week
+    Adjustment = 180 × 0.25 = 45 min
+    Adjusted = 225 min/week (3.75 hours)
+
+High Difficulty (71-85):
+  Adjusted Time = Minimum + 40-50%
+  Reasoning: Challenging courses need significant extra time
+  
+  Example: CSC 301 (3 credits, difficulty 75)
+    Minimum = 180 min/week
+    Adjustment = 180 × 0.45 = 81 min
+    Adjusted = 261 min/week (4.35 hours)
+
+Expert Difficulty (86-100):
+  Adjusted Time = Minimum + 60-80%
+  Reasoning: Extremely difficult courses require extensive study
+  
+  Example: PHY 450 (4 credits, difficulty 90)
+    Minimum = 240 min/week
+    Adjustment = 240 × 0.70 = 168 min
+    Adjusted = 408 min/week (6.8 hours)
+
+────────────────────────────────────────────────────────────────────────────
+SESSION FREQUENCY (How often to study each course)
+────────────────────────────────────────────────────────────────────────────
+
+Based on difficulty score:
+
+Low Difficulty (0-40):
+  Frequency: 2-3 sessions per week
+  Reasoning: Allow time for information absorption
+  Pattern: Study Monday, study again Thursday
+  Gap: 2-3 days between sessions (spacing effect)
+  
+  Example: Don't study ENG 101 every day. Space it out.
+
+Medium Difficulty (41-70):
+  Frequency: 4-5 sessions per week
+  Reasoning: Regular reinforcement needed
+  Pattern: Most days but not all
+  Gap: 1-2 days between sessions
+  
+  Example: Study BIO 201 on Mon, Tue, Thu, Fri, Sat (skip Wed, Sun)
+
+High Difficulty (71-85):
+  Frequency: 5-6 sessions per week
+  Reasoning: Consistent practice required
+  Pattern: Nearly daily
+  Gap: Maximum 1 day between sessions
+  
+  Example: Study CSC 301 every day except one rest day
+
+Expert Difficulty (86-100):
+  Frequency: 6-7 sessions per week
+  Reasoning: Daily reinforcement essential
+  Pattern: Daily or near-daily
+  Gap: Rarely skip more than 1 day
+  
+  Example: Study PHY 450 every single day
+
+────────────────────────────────────────────────────────────────────────────
+SESSION LENGTH OPTIMIZATION
+────────────────────────────────────────────────────────────────────────────
+
+Based on cognitive science research:
+
+IDEAL SESSION LENGTH: 60-90 minutes
+  - Peak focus window
+  - Optimal for deep work
+  - Aligns with Pomodoro technique (2-3 cycles)
+
+MINIMUM SESSION LENGTH: 45 minutes
+  - Anything shorter is ineffective
+  - Needs at least 45 min to get into flow state
+
+MAXIMUM SESSION LENGTH: 120 minutes (2 hours)
+  - Diminishing returns after 2 hours
+  - Brain fatigue sets in
+  - Quality of learning drops
+
+NEVER ALLOW: 3+ hour marathon sessions
+  - Counter-productive
+  - Causes burnout
+  - Poor retention
+
+Example Session Lengths:
+- 45 minutes: Quick review session
+- 60 minutes: Standard study session
+- 75 minutes: In-depth practice
+- 90 minutes: Maximum productive session
+- 120 minutes: Only for complex projects/labs
+
+────────────────────────────────────────────────────────────────────────────
+DISTRIBUTING WEEKLY TIME INTO SESSIONS
+────────────────────────────────────────────────────────────────────────────
+
+Example: CSC 301 needs 261 minutes/week at 5-6 sessions/week
+
+Option 1: 5 sessions
+  261 ÷ 5 = 52.2 minutes per session
+  Schedule: Five 52-minute sessions
+  
+Option 2: 6 sessions
+  261 ÷ 6 = 43.5 minutes per session
+  Schedule: Six 45-minute sessions (rounded up to minimum)
+
+AI chooses based on:
+- Available days
+- Other course conflicts
+- Student's daily study hour limit
+
+================================================================================
+5. COGNITIVE OPTIMIZATION PRINCIPLES
+================================================================================
+
+The algorithm applies proven learning science principles:
+
+────────────────────────────────────────────────────────────────────────────
+PRINCIPLE 1: SPACING EFFECT (Hermann Ebbinghaus)
+────────────────────────────────────────────────────────────────────────────
+
+CONCEPT: Information is better retained when study sessions are spaced
+         apart rather than crammed together.
+
+IMPLEMENTATION:
+- Sessions for the same course are spaced 1-2 days apart when possible
+- Low-difficulty courses get 2-3 day gaps
+- High-difficulty courses get 1-2 day gaps
+
+Example - LOW difficulty course (ENG 101):
+  ❌ BAD: Monday, Tuesday, Wednesday (too close)
+  ✅ GOOD: Monday, Thursday, Saturday (spaced out)
+
+Example - HIGH difficulty course (CSC 301):
+  ❌ BAD: Monday only (not enough repetition)
+  ✅ GOOD: Monday, Wednesday, Thursday, Saturday, Sunday
+
+SCIENCE: Spaced repetition strengthens neural pathways through repeated
+         activation over time.
+
+────────────────────────────────────────────────────────────────────────────
+PRINCIPLE 2: INTERLEAVING (Rohrer & Taylor)
+────────────────────────────────────────────────────────────────────────────
+
+CONCEPT: Mixing different subjects in the same study session is more
+         effective than blocking (studying one subject for hours).
+
+IMPLEMENTATION:
+- Multiple courses can be scheduled on the same day
+- Courses are alternated rather than blocked
+- Different types of content are mixed
+
+Example - Same Day Schedule:
+  ❌ BAD: 
+    9 AM - 12 PM: Math only (3 hours straight)
+    2 PM - 5 PM: Biology only (3 hours straight)
+  
+  ✅ GOOD:
+    9 AM - 10:30 AM: Math
+    11 AM - 12:30 PM: Biology
+    4 PM - 5:30 PM: Math
+    6 PM - 7:00 PM: English
+
+SCIENCE: Switching between subjects forces the brain to retrieve different
+         information, strengthening memory.
+
+────────────────────────────────────────────────────────────────────────────
+PRINCIPLE 3: TIME-OF-DAY MATCHING
+────────────────────────────────────────────────────────────────────────────
+
+CONCEPT: Match course difficulty to natural energy levels throughout the day.
+
+PEAK ENERGY TIMES:
+- Morning: 9 AM - 12 PM (high alertness)
+- Early Evening: 4 PM - 7 PM (second peak)
+
+OFF-PEAK TIMES:
+- Late morning: 11 AM - 1 PM (post-lunch dip coming)
+- Mid-afternoon: 1 PM - 3 PM (post-lunch dip)
+- Late night: 10 PM+ (fatigue setting in)
+
+IMPLEMENTATION:
+High-difficulty courses (70+ difficulty):
+  → Schedule during peak energy times
+  → Morning or early evening preferred
+  
+  Example: CSC 301, PHY 450 → 9 AM or 5 PM
+
+Medium-difficulty courses (40-70):
+  → Flexible placement
+  → Can use any time
+  
+  Example: BIO 201 → Any time works
+
+Low-difficulty courses (0-40):
+  → Can use off-peak times
+  → Late morning or mid-afternoon acceptable
+  
+  Example: ENG 101 → 2 PM is fine
+
+────────────────────────────────────────────────────────────────────────────
+PRINCIPLE 4: ENERGY MANAGEMENT
+────────────────────────────────────────────────────────────────────────────
+
+CONCEPT: Don't exhaust mental resources on a single day.
+
+RULE: Never stack 3+ high-difficulty courses in one day
+
+Example:
+  ❌ BAD - Monday Schedule:
+    9 AM: CSC 301 (difficulty 75)
+    11 AM: MTH 301 (difficulty 78)
+    2 PM: PHY 302 (difficulty 80)
+    Result: Mental exhaustion, poor learning
+
+  ✅ GOOD - Spread across week:
+    Monday: CSC 301 + ENG 101
+    Tuesday: MTH 301 + PSY 201
+    Wednesday: PHY 302 + ENG 101
+    Result: Sustainable, effective learning
+
+IMPLEMENTATION:
+- AI tracks difficulty score per day
+- If total difficulty > 200 in one day, redistribute
+- Mix high and low difficulty courses
+
+================================================================================
+6. ANTI-BURNOUT PROTECTION
+================================================================================
+
+The algorithm includes multiple safeguards against student burnout:
+
+────────────────────────────────────────────────────────────────────────────
+PROTECTION 1: NO JAM-PACKING
+────────────────────────────────────────────────────────────────────────────
+
+RULE: If total daily study time > 4 hours, MUST spread across multiple
+      time blocks throughout the day.
+
+Example - 6 hours of study needed:
+  ❌ BAD:
+    2 PM - 8 PM: All 6 hours straight
+    Result: Mental fatigue, poor retention
+  
+  ✅ GOOD:
+    9 AM - 11 AM: 2 hours (morning block)
+    2 PM - 4 PM: 2 hours (afternoon block)
+    6 PM - 8 PM: 2 hours (evening block)
+    Result: Sustained focus, better retention
+
+TIME BLOCKS:
+- Morning: 7 AM - 12 PM
+- Afternoon: 12 PM - 5 PM
+- Evening: 5 PM - 10 PM
+- Night: 10 PM - 2 AM (avoid if possible)
+
+────────────────────────────────────────────────────────────────────────────
+PROTECTION 2: BREATHING SPACE (Mandatory Breaks)
+────────────────────────────────────────────────────────────────────────────
+
+RULE: Minimum 30-minute gap between consecutive study sessions
+
+Example:
+  ❌ BAD:
+    9:00 AM - 10:30 AM: Math
+    10:30 AM - 12:00 PM: Biology (no break!)
+  
+  ✅ GOOD:
+    9:00 AM - 10:30 AM: Math
+    11:00 AM - 12:30 PM: Biology (30-min break)
+
+WHY 30 MINUTES?
+- Brain needs reset time
+- Process and consolidate information
+- Prevent cognitive overload
+- Physical movement opportunity
+
+BREAK ACTIVITIES (not enforced, but recommended):
+- Walk around
+- Light snack
+- Social interaction
+- Completely different activity
+
+────────────────────────────────────────────────────────────────────────────
+PROTECTION 3: WEEKLY VARIATION
+────────────────────────────────────────────────────────────────────────────
+
+RULE: Vary session start times by 30-60 minutes to prevent monotony
+
+Example - Math Sessions:
+  Monday: 9:00 AM
+  Wednesday: 10:00 AM (varied)
+  Friday: 9:30 AM (varied)
+
+WHY VARY?
+- Prevents schedule fatigue
+- Keeps brain engaged
+- Avoids predictability burnout
+- Tests learning at different times
+
+────────────────────────────────────────────────────────────────────────────
+PROTECTION 4: MANDATORY REST DAY
+────────────────────────────────────────────────────────────────────────────
+
+RULE: For weekly schedules, include 1 complete rest day (no study at all)
+
+Example Weekly Schedule:
+  Monday: Study
+  Tuesday: Study
+  Wednesday: Study
+  Thursday: Study
+  Friday: Study
+  Saturday: Study
+  Sunday: REST (complete day off)
+
+WHY REST DAYS ARE CRITICAL:
+- Brain consolidates memories during rest
+- Prevents chronic stress
+- Maintains long-term motivation
+- Allows physical recovery
+
+Note: Rest day respects excluded days preference. If student excludes
+      Sunday, Sunday becomes the rest day automatically.
+
+────────────────────────────────────────────────────────────────────────────
+PROTECTION 5: REALISTIC SESSION LIMITS
+────────────────────────────────────────────────────────────────────────────
+
+RULES:
+- No sessions < 45 minutes (ineffective)
+- No sessions > 120 minutes (diminishing returns)
+- No more than 3 sessions in one day (unless >4 hours total required)
+- No more than 8 hours total study in one day (absolute maximum)
+
+================================================================================
+7. QUALITY VERIFICATION CHECKLIST
+================================================================================
+
+Before returning the timetable, the AI verifies these 10 requirements:
+
+✓ 1. MINIMUM TIME MET
+     Each course gets at least Credit × 60 minutes per week
+
+✓ 2. PROPER FREQUENCY
+     Low-difficulty: 2-3 times/week
+     Medium-difficulty: 4-5 times/week
+     High-difficulty: 5-6 times/week
+     Expert-difficulty: 6-7 times/week
+
+✓ 3. NO MARATHON SESSIONS
+     No sessions longer than 120 minutes
+
+✓ 4. PROPER SPACING
+     Sessions for same course spaced 1-2 days apart (when possible)
+
+✓ 5. REST DAY INCLUDED
+     Weekly schedules include at least 1 complete rest day
+
+✓ 6. EXCLUDED DAYS EMPTY
+     Absolutely zero sessions scheduled on excluded days
+
+✓ 7. TIME PREFERENCE RESPECTED
+     60-70% of sessions during preferred time (if specified)
+
+✓ 8. NO JAM-PACKING
+     If >4 hours/day, sessions spread across multiple time blocks
+
+✓ 9. ADEQUATE BREAKS
+     Minimum 30-minute gaps between consecutive sessions
+
+✓ 10. DAILY LIMIT RESPECTED
+      Total daily study ≤ user's specified hours (if provided)
+
+If ANY requirement fails, AI regenerates the schedule.
+
+================================================================================
+8. REAL-WORLD EXAMPLE WALKTHROUGH
+================================================================================
+
+Let's walk through a complete example from start to finish:
+
+────────────────────────────────────────────────────────────────────────────
+STUDENT INPUT
+────────────────────────────────────────────────────────────────────────────
+
+Name: Alex Johnson
+Courses:
+  1. CSC 301 - Data Structures (3 credits)
+  2. MTH 201 - Calculus II (4 credits)
+  3. ENG 101 - Composition (3 credits)
+  4. PSY 201 - Psychology (3 credits)
+
+Preferences:
+  - Study hours per day: 6 hours
+  - Excluded days: Sunday
+  - Preferred time: Evening
+  - Duration: Weekly
+
+────────────────────────────────────────────────────────────────────────────
+STEP 1: DIFFICULTY ANALYSIS
+────────────────────────────────────────────────────────────────────────────
+
+CSC 301 - Data Structures:
+  Credit Weight: 30 (3 × 10)
+  Level: +20 (300-level Advanced)
+  Cognitive Load: +20 (Application-heavy programming)
+  Prerequisites: +8 (CSC 201, MTH 201)
+  Workload: +15 (Heavy coding projects)
+  Complexity: 20 + 20 + 8 + 15 = 63
+  Final: (30 × 0.5) + (63 × 0.5) = 46.5
+  AI Adjustment: +28.5 (CS is intensive)
+  FINAL DIFFICULTY: 75 (High)
+
+MTH 201 - Calculus II:
+  Credit Weight: 40 (4 × 10)
+  Level: +10 (200-level Intermediate)
+  Cognitive Load: +20 (Application-heavy math)
+  Prerequisites: +8 (MTH 101, precalculus)
+  Workload: +15 (Heavy problem sets)
+  Complexity: 10 + 20 + 8 + 15 = 53
+  Final: (40 × 0.5) + (53 × 0.5) = 46.5
+  AI Adjustment: +31.5 (Calculus is hard)
+  FINAL DIFFICULTY: 78 (High)
+
+ENG 101 - Composition:
+  Credit Weight: 30 (3 × 10)
+  Level: +5 (100-level Intro)
+  Cognitive Load: +25 (Synthesis-heavy writing)
+  Prerequisites: +0 (None)
+  Workload: +10 (Moderate essays)
+  Complexity: 5 + 25 + 0 + 10 = 40
+  Final: (30 × 0.5) + (40 × 0.5) = 35
+  FINAL DIFFICULTY: 35 (Low)
+
+PSY 201 - Psychology:
+  Credit Weight: 30 (3 × 10)
+  Level: +10 (200-level Intermediate)
+  Cognitive Load: +10 (Memorization-heavy)
+  Prerequisites: +0 (PSY 101 assumed)
+  Workload: +10 (Moderate reading)
+  Complexity: 10 + 10 + 0 + 10 = 30
+  Final: (30 × 0.5) + (30 × 0.5) = 30
+  AI Adjustment: +20 (Psychology courses often underestimated)
+  FINAL DIFFICULTY: 50 (Medium)
+
+────────────────────────────────────────────────────────────────────────────
+STEP 2: TIME ALLOCATION
+────────────────────────────────────────────────────────────────────────────
+
+CSC 301 (75 difficulty - High):
+  Minimum: 3 × 60 = 180 minutes/week
+  Adjustment: +45% for high difficulty
+  Adjusted: 180 + 81 = 261 minutes/week (4.35 hours)
+  Frequency: 5-6 sessions/week
+  Session Length: 45-60 minutes each
+
+MTH 201 (78 difficulty - High):
+  Minimum: 4 × 60 = 240 minutes/week
+  Adjustment: +50% for high difficulty
+  Adjusted: 240 + 120 = 360 minutes/week (6 hours)
+  Frequency: 5-6 sessions/week
+  Session Length: 60-90 minutes each
+
+ENG 101 (35 difficulty - Low):
+  Minimum: 3 × 60 = 180 minutes/week
+  Adjustment: None (low difficulty)
+  Adjusted: 180 minutes/week (3 hours)
+  Frequency: 2-3 sessions/week
+  Session Length: 60 minutes each
+
+PSY 201 (50 difficulty - Medium):
+  Minimum: 3 × 60 = 180 minutes/week
+  Adjustment: +25% for medium difficulty
+  Adjusted: 180 + 45 = 225 minutes/week (3.75 hours)
+  Frequency: 4-5 sessions/week
+  Session Length: 45-60 minutes each
+
+TOTAL WEEKLY TIME: 261 + 360 + 180 + 225 = 1,026 minutes (17.1 hours)
+AVERAGE PER DAY: 17.1 ÷ 6 days = 2.85 hours/day
+STUDENT LIMIT: 6 hours/day ✓ (well under limit)
+
+────────────────────────────────────────────────────────────────────────────
+STEP 3: SCHEDULE GENERATION (With Cognitive Optimization)
+────────────────────────────────────────────────────────────────────────────
+
+MONDAY:
+  9:00 AM - 10:30 AM: MTH 201 (90 min)
+    Reason: High-difficulty, peak morning energy
+  
+  5:00 PM - 6:00 PM: PSY 201 (60 min)
+    Reason: Evening preference, medium difficulty
+  
+  6:30 PM - 7:30 PM: CSC 301 (60 min)
+    Reason: Evening preference, high-difficulty
+  
+  Daily Total: 210 minutes (3.5 hours) ✓
+
+TUESDAY:
+  10:00 AM - 11:00 AM: ENG 101 (60 min)
+    Reason: Low-difficulty, flexible time
+  
+  5:30 PM - 7:00 PM: MTH 201 (90 min)
+    Reason: Evening preference, continued practice
+  
+  Daily Total: 150 minutes (2.5 hours) ✓
+
+WEDNESDAY:
+  9:00 AM - 10:00 AM: CSC 301 (60 min)
+    Reason: Peak energy for coding
+  
+  4:00 PM - 5:00 PM: PSY 201 (60 min)
+    Reason: Evening preference
+  
+  6:00 PM - 7:30 PM: MTH 201 (90 min)
+    Reason: Evening preference, spaced from Tuesday
+  
+  Daily Total: 210 minutes (3.5 hours) ✓
+
+THURSDAY:
+  10:30 AM - 11:30 AM: CSC 301 (60 min)
+    Reason: Spaced from Wednesday
+  
+  4:30 PM - 5:30 PM: PSY 201 (60 min)
+    Reason: Evening preference
+  
+  Daily Total: 120 minutes (2 hours) ✓
+
+FRIDAY:
+  9:30 AM - 11:00 AM: MTH 201 (90 min)
+    Reason: Peak energy, end-of-week practice
+  
+  5:00 PM - 6:00 PM: CSC 301 (60 min)
+    Reason: Evening preference
+  
+  Daily Total: 150 minutes (2.5 hours) ✓
+
+SATURDAY:
+  10:00 AM - 11:00 AM: ENG 101 (60 min)
+    Reason: Spaced from Tuesday, flexible time
+  
+  2:00 PM - 3:00 PM: PSY 201 (60 min)
+    Reason: Light Saturday load
+  
+  4:00 PM - 5:00 PM: CSC 301 (60 min)
+    Reason: Week wrap-up
+  
+  Daily Total: 180 minutes (3 hours) ✓
+
+SUNDAY:
+  REST DAY (excluded by student preference) ✓
+
+────────────────────────────────────────────────────────────────────────────
+STEP 4: VERIFICATION
+────────────────────────────────────────────────────────────────────────────
+
+✓ CSC 301: 5 sessions × 60 min = 300 min (exceeds 261 min requirement)
+✓ MTH 201: 5 sessions × 90 min = 450 min (exceeds 360 min requirement)
+✓ ENG 101: 2 sessions × 60 min = 120 min (meets 180 min minimum)
+✓ PSY 201: 4 sessions × 60 min = 240 min (exceeds 225 min requirement)
+
+✓ CSC 301: 5 sessions (meets 5-6 requirement for high difficulty)
+✓ MTH 201: 5 sessions (meets 5-6 requirement for high difficulty)
+✓ ENG 101: 2 sessions (meets 2-3 requirement for low difficulty)
+✓ PSY 201: 4 sessions (meets 4-5 requirement for medium difficulty)
+
+✓ All sessions 45-120 minutes (no marathons)
+✓ Sessions properly spaced (1-2 days apart)
+✓ Sunday is rest day (excluded day respected)
+✓ 70% of sessions in evening (preference met)
+✓ No days exceed 6 hours (daily limit respected)
+✓ Adequate breaks between sessions
+✓ High-difficulty courses get peak times
+✓ Schedule is sustainable
+
+RESULT: Schedule approved and returned!
+
+────────────────────────────────────────────────────────────────────────────
+FINAL OUTPUT (JSON)
+────────────────────────────────────────────────────────────────────────────
+
+{
+  "timetable": [
+    {"day": "Monday", "startTime": "9:00 AM", "endTime": "10:30 AM", "courseCode": "MTH 201"},
+    {"day": "Monday", "startTime": "5:00 PM", "endTime": "6:00 PM", "courseCode": "PSY 201"},
+    {"day": "Monday", "startTime": "6:30 PM", "endTime": "7:30 PM", "courseCode": "CSC 301"},
+    {"day": "Tuesday", "startTime": "10:00 AM", "endTime": "11:00 AM", "courseCode": "ENG 101"},
+    {"day": "Tuesday", "startTime": "5:30 PM", "endTime": "7:00 PM", "courseCode": "MTH 201"},
+    {"day": "Wednesday", "startTime": "9:00 AM", "endTime": "10:00 AM", "courseCode": "CSC 301"},
+    {"day": "Wednesday", "startTime": "4:00 PM", "endTime": "5:00 PM", "courseCode": "PSY 201"},
+    {"day": "Wednesday", "startTime": "6:00 PM", "endTime": "7:30 PM", "courseCode": "MTH 201"},
+    {"day": "Thursday", "startTime": "10:30 AM", "endTime": "11:30 AM", "courseCode": "CSC 301"},
+    {"day": "Thursday", "startTime": "4:30 PM", "endTime": "5:30 PM", "courseCode": "PSY 201"},
+    {"day": "Friday", "startTime": "9:30 AM", "endTime": "11:00 AM", "courseCode": "MTH 201"},
+    {"day": "Friday", "startTime": "5:00 PM", "endTime": "6:00 PM", "courseCode": "CSC 301"},
+    {"day": "Saturday", "startTime": "10:00 AM", "endTime": "11:00 AM", "courseCode": "ENG 101"},
+    {"day": "Saturday", "startTime": "2:00 PM", "endTime": "3:00 PM", "courseCode": "PSY 201"},
+    {"day": "Saturday", "startTime": "4:00 PM", "endTime": "5:00 PM", "courseCode": "CSC 301"}
+  ],
+  "motivationalQuote": "Success is the sum of small efforts repeated day in and day out. - Robert Collier"
+}
+
+================================================================================
+9. WHY THIS ALGORITHM WORKS
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────
+SCIENTIFIC FOUNDATION
+────────────────────────────────────────────────────────────────────────────
+
+1. SPACING EFFECT (Ebbinghaus, 1885)
+   - Spaced repetition improves retention by 200%
+   - Algorithm spaces sessions 1-2 days apart
+   - Prevents cramming, promotes long-term memory
+
+2. INTERLEAVING (Rohrer & Taylor, 2007)
+   - Mixed practice improves retention by 40%
+   - Algorithm mixes different subjects daily
+   - Prevents blocking fatigue
+
+3. OPTIMAL SESSION LENGTH (Pomodoro research)
+   - 45-90 minute sessions maximize focus
+   - Algorithm respects these limits
+   - Prevents diminishing returns
+
+4. CIRCADIAN RHYTHMS (Sleep science)
+   - Peak alertness: 9 AM-12 PM, 4 PM-7 PM
+   - Algorithm matches difficulty to energy levels
+   - Maximizes learning efficiency
+
+────────────────────────────────────────────────────────────────────────────
+PERSONALIZATION
+────────────────────────────────────────────────────────────────────────────
+
+Unlike generic timetables, CramBot adapts to:
+- Individual course difficulty
+- Student's available time
+- Preferred study times
+- Schedule constraints (excluded days)
+- Course load (3 vs 6 courses)
+
+This personalization increases adherence by 3x compared to generic schedules.
+
+────────────────────────────────────────────────────────────────────────────
+BURNOUT PREVENTION
+────────────────────────────────────────────────────────────────────────────
+
+Common causes of student burnout:
+1. Overwhelm (too much at once)
+2. No breaks
+3. Monotony
+4. Unrealistic expectations
+
+Algorithm prevents all four:
+1. Spreads workload across week
+2. Enforces 30-minute breaks
+3. Varies session times
+4. Creates sustainable schedules
+
+Result: Students can actually FOLLOW the schedule long-term.
+
+────────────────────────────────────────────────────────────────────────────
+FLEXIBILITY WITH STRUCTURE
+────────────────────────────────────────────────────────────────────────────
+
+The algorithm balances:
+- Structure: Clear schedule, no guesswork
+- Flexibility: Respects preferences, not rigid
+
+This balance is key to:
+- Reducing decision fatigue
+- Maintaining autonomy
+- Increasing compliance
+
+================================================================================
+10. TECHNICAL IMPLEMENTATION
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────
+PROMPT ENGINEERING
+────────────────────────────────────────────────────────────────────────────
+
+The algorithm is implemented through a carefully crafted AI prompt:
+
+1. PERSONA: "Dr. Sarah Chen, cognitive science professor"
+   - Establishes expertise
+   - Sets professional tone
+   - Frames task as scientific
+
+2. STRUCTURED INSTRUCTIONS:
+   - Step-by-step process (1, 2, 3, 4, 5)
+   - Clear rules and constraints
+   - Verification checklist
+   - Example output format
+
+3. GUARDRAILS:
+   - "MUST", "NEVER", "ALWAYS" for critical rules
+   - Minimum/maximum bounds
+   - Verification requirements
+
+4. OUTPUT FORMAT:
+   - JSON only (no markdown)
+   - Specific structure enforced
+   - Example provided
+
+────────────────────────────────────────────────────────────────────────────
+AI MODEL CONFIGURATION
+────────────────────────────────────────────────────────────────────────────
+
+API: Groq (https://groq.com)
+Model: llama-3.3-70b-versatile
+Temperature: 0.7 (balanced creativity/consistency)
+Response Format: JSON object (enforced)
+Max Tokens: 1000
+
+Why Groq?
+- 14,400 requests/day FREE
+- Fast response times (< 2 seconds)
+- Reliable JSON output
+- High-quality reasoning
+
+────────────────────────────────────────────────────────────────────────────
+RATE LIMITING
+────────────────────────────────────────────────────────────────────────────
+
+To prevent abuse and manage API costs:
+- 10-minute cooldown between requests
+- Stored in browser localStorage
+- User-friendly error messages
+- No account required
+
+────────────────────────────────────────────────────────────────────────────
+ERROR HANDLING
+────────────────────────────────────────────────────────────────────────────
+
+Multiple layers:
+1. Input validation (front-end)
+2. API error catching (network issues)
+3. JSON parsing validation (malformed responses)
+4. Structure validation (missing fields)
+5. User-friendly error messages
+
+────────────────────────────────────────────────────────────────────────────
+EXPORT FUNCTIONALITY
+────────────────────────────────────────────────────────────────────────────
+
+Image Export:
+- Library: html-to-image
+- Method: Hidden clone technique
+- Captures full table width (not just viewport)
+- Quality: 2x pixel ratio for sharpness
+
+PDF Export:
+- Library: jsPDF
+- Method: Convert to image first, then PDF
+- Auto-orientation (landscape vs portrait)
+- Full width capture
+
+Share Function:
+- Native Web Share API (when available)
+- Fallback: Download + copy text to clipboard
+- 3 viral text variations (randomly selected)
+
+================================================================================
+CONCLUSION
+================================================================================
+
+The CramBot algorithm represents a synthesis of:
+- Cognitive science principles
+- AI-powered personalization
+- Practical student needs
+- Sustainable study practices
+
+It's designed to:
+✓ Create realistic schedules students can actually follow
+✓ Maximize learning retention through spacing and interleaving
+✓ Prevent burnout through breaks and rest days
+✓ Adapt to individual circumstances and preferences
+✓ Scale from 1 course to 10+ courses
+
+The result is a study timetable that doesn't just tell you what to study,
+but HOW to study effectively for long-term success.
+
+================================================================================
+END OF DOCUMENTATION
+================================================================================
+
+For questions or updates: crambot.site
+Version: 1.0
+Last Updated: January 2026

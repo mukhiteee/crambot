@@ -1,6 +1,6 @@
 // ============================================
-// CRAMBOT - UPDATED & FIXED VERSION
-// All issues resolved + Mobile optimized
+// CRAMBOT - ALGORITHM-MATCHED VERSION
+// Implements every detail from ALGORITHM_GUIDE.txt
 // ============================================
 
 (function() {
@@ -11,14 +11,13 @@
     // ============================================
     
     const CONFIG = {
-        GROQ_API_KEY: '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', // Get from https://console.groq.com
+        GROQ_API_KEY: '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',
         GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions',
         MODEL: 'llama-3.3-70b-versatile',
         RATE_LIMIT_MINUTES: 10
     };
 
     const THEMES = {
-        // Light Themes
         classic: {
             name: 'Classic Purple',
             headerBg: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
@@ -69,8 +68,6 @@
             border: '#fde047',
             watermark: '#ca8a04'
         },
-        
-        // Dark Themes - Enhanced!
         darkPurple: {
             name: 'Dark Purple',
             headerBg: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
@@ -131,10 +128,6 @@
         { main: '🎨 Preparing your schedule...', sub: 'Almost ready!' }
     ];
 
-    // ============================================
-    // 2. STATE MANAGEMENT
-    // ============================================
-    
     const state = {
         selectedTheme: 'classic',
         selectedLayout: 'school',
@@ -144,10 +137,6 @@
         messageInterval: null
     };
 
-    // ============================================
-    // 3. DOM ELEMENTS
-    // ============================================
-    
     const elements = {
         themeToggle: document.getElementById('theme-toggle'),
         themeIcon: document.querySelector('.theme-icon'),
@@ -171,7 +160,7 @@
     };
 
     // ============================================
-    // 4. THEME MANAGEMENT
+    // THEME MANAGEMENT
     // ============================================
     
     function initializeTheme() {
@@ -187,14 +176,13 @@
     function toggleTheme() {
         const currentTheme = elements.html.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
         elements.html.setAttribute('data-theme', newTheme);
         localStorage.setItem('crambot-theme', newTheme);
         updateThemeIcon(newTheme);
     }
 
     // ============================================
-    // 5. COURSE MANAGEMENT
+    // COURSE MANAGEMENT
     // ============================================
     
     function addCourse() {
@@ -244,12 +232,11 @@
     }
 
     // ============================================
-    // 6. FORM DATA COLLECTION
+    // FORM DATA COLLECTION
     // ============================================
     
     function collectFormData() {
         const studentName = elements.studentNameInput.value.trim();
-        
         const courses = [];
         const courseItems = elements.courseList.querySelectorAll('.course-item');
         
@@ -273,10 +260,8 @@
         }
 
         const totalCredits = courses.reduce((sum, course) => sum + (course.credit || 0), 0);
-
         const studyHours = elements.studyHoursInput.value;
-        const excludedDays = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-            .map(cb => cb.value);
+        const excludedDays = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
         const studyTime = document.querySelector('input[name="study-time"]:checked')?.value || null;
         const duration = document.querySelector('input[name="duration"]:checked')?.value || 'Weekly';
 
@@ -306,7 +291,7 @@
     }
 
     // ============================================
-    // 7. AI PROMPT GENERATION (IMPROVED ALGORITHM)
+    // AI PROMPT - EXACTLY MATCHES ALGORITHM GUIDE
     // ============================================
     
     function generatePrompt(data) {
@@ -319,89 +304,231 @@
             return `- ${course.courseCode}: ${course.courseTitle} (credit unit not provided)`;
         }).join('\n');
 
-        const studyHoursText = studyHours ? `${studyHours} hours` : 'Not specified (AI should recommend)';
+        const studyHoursText = studyHours ? `${studyHours} hours` : 'Not specified (AI should recommend 2-8 hours based on difficulty)';
         const studyHoursRule = studyHours
-            ? `Distribute approximately ${studyHours} hours per day across courses based on difficulty scores.`
-            : 'Calculate recommended study hours (2-8 hours/day) based on total difficulty.';
+            ? `Distribute approximately ${studyHours} hours per day across courses based on difficulty scores. Higher difficulty courses get proportionally more time.`
+            : 'Calculate recommended study hours based on total difficulty score (2-8 hours/day depending on course load). Higher total difficulty = more daily hours needed.';
 
         const excludedDaysText = excludedDays ? excludedDays.join(', ') : 'None (all days available)';
         const studyTimeText = studyTime || 'Not specified';
         const studyTimeRule = studyTime
-            ? `${studyTime} is PREFERRED (aim for 60-70% of sessions). If difficulty is high, use other times too.`
-            : 'Use Evening as default (60-70%), but distribute flexibly. Evening = 4PM-8PM.';
+            ? `${studyTime} is the PREFERRED time (not mandatory). Aim for 60-70% of sessions during ${studyTime}. If difficulty scores are high or total study time increases, distribute sessions across other times of day to avoid jam-packing. Balance is key.`
+            : 'Use Evening as default preference (60-70% of sessions), but distribute flexibly across the day based on course load. Avoid scheduling all sessions at the same time. Evening = 4PM-8PM.';
 
         let durationRule;
         if (duration === 'Weekly') {
-            durationRule = `Generate 7-day weekly timetable (Monday-Sunday). Exclude ${excludedDaysText}. Use 'day' field (e.g., 'Monday').`;
+            durationRule = `Generate a 7-day weekly timetable (Monday-Sunday). Exclude days from excluded list. Use 'day' field in JSON (e.g., 'Monday').`;
         } else if (duration === 'Monthly') {
-            durationRule = `Generate 4-week (28-day) monthly timetable. Use 'day' field with dates (e.g., 'January 20').`;
+            durationRule = `Generate a 4-week (28-day) monthly timetable. Exclude specified days each week. Use 'day' field with dates (e.g., 'January 20', 'January 21').`;
         } else {
-            durationRule = `Generate timetable from ${startDate} to ${endDate}. Use 'day' in format 'YYYY-MM-DD'.`;
+            durationRule = `Generate a timetable from ${startDate} to ${endDate}. Exclude specified days. Use 'day' field with actual dates in format 'YYYY-MM-DD'.`;
         }
 
-        return `You are Dr. Sarah Chen, cognitive science professor with 15+ years experience helping students optimize study schedules.
+        return `You are Dr. Sarah Chen, a cognitive science professor with 15+ years of experience helping students optimize their study schedules. You understand the psychology of learning, retention, and burnout prevention.
 
-TASK: Create a scientifically-backed, personalized study timetable.
+TASK: Create a scientifically-backed, personalized study timetable that maximizes retention while preventing burnout.
 
-===== STEP 1: COURSE DIFFICULTY ANALYSIS (0-100) =====
+================================================================================
+STEP 1: DEEP COURSE DIFFICULTY ANALYSIS (0-100 Scale)
+================================================================================
 
-For EACH course, calculate difficulty:
+For EACH course, calculate a comprehensive difficulty score using these 5 factors:
 
-A) CREDIT WEIGHT: Each credit = 10 points baseline
+A) CREDIT WEIGHT (BASELINE):
+   Each credit unit = 10 points baseline
+   - 1 credit = 10 points
+   - 2 credits = 20 points
+   - 3 credits = 30 points
+   - 4 credits = 40 points
+   - 5 credits = 50 points
+   - 6 credits = 60 points
 
-B) COMPLEXITY FACTORS:
-   - Level: Intro(+5), Intermediate(+10), Advanced(+20), Expert(+30)
-   - Cognitive Load: Memorization(+10), Application(+20), Synthesis(+25)
-   - Prerequisites: None(+0), 1-2(+8), 3+(+15)
-   - Workload: Light(+5), Moderate(+10), Heavy(+15), Thesis(+20)
+B) SUBJECT COMPLEXITY LEVEL (+5 to +30 points):
+   Research the course level/number:
+   - Introductory (100-level): +5 points (basic concepts)
+   - Intermediate (200-level): +10 points (moderate complexity)
+   - Advanced (300-level): +20 points (specialized knowledge)
+   - Expert (400+ level): +30 points (highly specialized)
 
-C) FINAL SCORE:
-   If credit provided: (Credit×0.5) + (Complexity×0.5)
-   If NO credit: Full Complexity Score
+C) COGNITIVE LOAD TYPE (+10 to +25 points):
+   Research the subject to determine mental processing type:
+   - Memorization-heavy (History, Biology, Anatomy): +10 points
+   - Application-heavy (Math, Programming, Physics): +20 points
+   - Synthesis-heavy (Philosophy, Research, Advanced Writing): +25 points
 
-===== STEP 2: TIME ALLOCATION =====
+D) PREREQUISITE REQUIREMENTS (+0 to +15 points):
+   Research typical prerequisites:
+   - No prerequisites: +0 points
+   - 1-2 prerequisites: +8 points
+   - 3+ prerequisites: +15 points
 
-MINIMUM = Credit × 60 minutes/week
+E) TYPICAL WORKLOAD (+5 to +20 points):
+   Research typical time commitment:
+   - Light (reading/practice): +5 points
+   - Moderate (regular assignments): +10 points
+   - Heavy (projects/labs): +15 points
+   - Thesis/Capstone: +20 points
 
-ADJUSTED TIME:
-- Low (0-40): Minimum only
-- Medium (41-70): +20-30%
-- High (71-85): +40-50%
-- Expert (86-100): +60-80%
+FINAL DIFFICULTY CALCULATION:
+- IF credit provided: Final = (Credit Weight × 0.5) + (B+C+D+E × 0.5)
+- IF NO credit: Final = B + C + D + E
 
-FREQUENCY:
-- Low: 2-3 sessions/week
-- Medium: 4-5 sessions/week
-- High: 5-6 sessions/week
-- Expert: 6-7 sessions/week
+DIFFICULTY CATEGORIES:
+- Low (0-40): Basic courses
+- Medium (41-70): Moderate challenge
+- High (71-85): Challenging courses
+- Expert (86-100): Extremely difficult
 
-SESSION LENGTH: 45-120 min (ideal 60-90 min)
+================================================================================
+STEP 2: TIME ALLOCATION & SESSION PLANNING
+================================================================================
 
-===== STUDENT DATA =====
+For each course:
+
+MINIMUM WEEKLY TIME (NON-NEGOTIABLE):
+   Credit Units × 60 minutes per week
+   Example: 3-credit course = minimum 180 minutes/week
+
+ADJUSTED TIME BASED ON DIFFICULTY:
+   - Low (0-40): Use minimum only
+   - Medium (41-70): Minimum + 20-30%
+   - High (71-85): Minimum + 40-50%
+   - Expert (86-100): Minimum + 60-80%
+
+SESSION FREQUENCY (How often per week):
+   - Low (0-40): 2-3 sessions/week (allow gaps for absorption)
+   - Medium (41-70): 4-5 sessions/week (regular reinforcement)
+   - High (71-85): 5-6 sessions/week (consistent practice)
+   - Expert (86-100): 6-7 sessions/week (daily reinforcement)
+
+SESSION LENGTH (Individual session duration):
+   - Ideal: 60-90 minutes (peak focus window)
+   - Minimum: 45 minutes (anything less is ineffective)
+   - Maximum: 120 minutes (diminishing returns after)
+   - NEVER: 3+ hour marathons
+
+DISTRIBUTION EXAMPLE:
+   CSC 301 needs 261 min/week at 5-6 sessions
+   → Five 52-minute sessions OR Six 45-minute sessions
+
+================================================================================
+STEP 3: COGNITIVE OPTIMIZATION PRINCIPLES
+================================================================================
+
+Apply these learning science principles:
+
+SPACING EFFECT (Hermann Ebbinghaus):
+   - Space sessions for same course 1-2 days apart when possible
+   - Low-difficulty: 2-3 day gaps
+   - High-difficulty: 1-2 day gaps
+   - Example BAD: Monday, Tuesday, Wednesday (too close)
+   - Example GOOD: Monday, Thursday, Saturday (spaced)
+
+INTERLEAVING (Rohrer & Taylor):
+   - Mix different subjects in the same day
+   - Alternate subjects rather than blocking
+   - Example BAD: 3 hours Math straight, then 3 hours Bio straight
+   - Example GOOD: 90min Math, 90min Bio, 90min Math, 60min English
+
+TIME-OF-DAY MATCHING:
+   Peak energy times: 9 AM-12 PM (morning), 4 PM-7 PM (early evening)
+   - High-difficulty (70+) → Peak energy times
+   - Medium (40-70) → Flexible placement
+   - Low (0-40) → Off-peak acceptable
+
+ENERGY MANAGEMENT:
+   - NEVER stack 3+ high-difficulty courses in one day
+   - Track total difficulty per day
+   - If total difficulty > 200 in one day, redistribute
+   - Mix high and low difficulty courses
+
+================================================================================
+STEP 4: ANTI-BURNOUT PROTECTION RULES
+================================================================================
+
+MANDATORY SAFEGUARDS:
+
+1. NO JAM-PACKING:
+   If daily study > 4 hours, MUST spread across multiple time blocks
+   - Morning (7 AM-12 PM)
+   - Afternoon (12 PM-5 PM)
+   - Evening (5 PM-10 PM)
+   Example: 6 hours = 2hr morning + 2hr afternoon + 2hr evening
+
+2. BREATHING SPACE:
+   Minimum 30-minute gap between consecutive sessions
+   - Brain needs reset time
+   - Prevent cognitive overload
+
+3. WEEKLY VARIATION:
+   Vary session start times by 30-60 minutes
+   - Monday: Math 9:00 AM
+   - Wednesday: Math 10:00 AM
+   - Friday: Math 9:30 AM
+
+4. MANDATORY REST DAY:
+   Include 1 complete rest day (no study) in weekly schedules
+   - Brain consolidates memories during rest
+   - Prevents chronic stress
+   - If student excludes Sunday, that becomes rest day
+
+5. REALISTIC LIMITS:
+   - No sessions < 45 minutes
+   - No sessions > 120 minutes
+   - No more than 8 hours total study in one day
+
+================================================================================
+STUDENT DATA
+================================================================================
+
 COURSES:
 ${courseList}
 
-TOTAL CREDITS: ${totalCredits || 'N/A'}
-STUDY HOURS/DAY: ${studyHoursText}
+TOTAL CREDITS: ${totalCredits || 'Not applicable'}
+AVAILABLE STUDY HOURS PER DAY: ${studyHoursText}
 EXCLUDED DAYS: ${excludedDaysText}
-PREFERRED TIME: ${studyTimeText}
-DURATION: ${duration}
+PREFERRED STUDY TIME: ${studyTimeText}
+TIMETABLE DURATION: ${duration}
 
-===== SCHEDULING RULES =====
+================================================================================
+SCHEDULING RULES
+================================================================================
 
 1. MINIMUM TIME: Each course MUST get Credit × 60 min/week
-2. FREQUENCY: Follow difficulty-based frequency rules
+2. DIFFICULTY-BASED FREQUENCY: Follow frequency rules above strictly
 3. ${studyHoursRule}
-4. NO SESSIONS ON: ${excludedDaysText}
-5. ${studyTimeRule}
-6. SPACING: Space sessions 1-2 days apart
-7. ANTI-BURNOUT: If >4 hours/day, spread across time blocks
-8. GAPS: 30-min minimum between sessions
+4. ABSOLUTE DAY EXCLUSION: NEVER schedule on ${excludedDaysText}
+5. TIME PREFERENCE: ${studyTimeRule}
+6. SPACING: Space sessions 1-2 days apart when possible
+7. ANTI-JAM-PACK: If >4 hours/day, spread across time blocks
+8. MANDATORY BREAKS: 30-min minimum between sessions
 9. REST DAY: Include 1 rest day in weekly schedules
 10. ${durationRule}
 
-===== OUTPUT FORMAT =====
-Return ONLY valid JSON:
+================================================================================
+QUALITY VERIFICATION CHECKLIST
+================================================================================
+
+Before returning, verify ALL 10 requirements:
+
+✓ 1. Each course gets at least Credit × 60 minutes per week
+✓ 2. Low-difficulty: 2-3 times/week; Medium: 4-5; High: 5-6; Expert: 6-7
+✓ 3. No sessions longer than 120 minutes
+✓ 4. Sessions for same course spaced 1-2 days apart (when possible)
+✓ 5. Weekly schedules include at least 1 complete rest day
+✓ 6. Absolutely zero sessions scheduled on excluded days
+✓ 7. 60-70% of sessions during preferred time (if specified)
+✓ 8. If >4 hours/day, sessions spread across multiple time blocks
+✓ 9. Minimum 30-minute gaps between consecutive sessions
+✓ 10. Total daily study ≤ user's specified hours (if provided)
+
+If ANY requirement fails, regenerate the schedule.
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+Return ONLY valid JSON (no markdown, no explanations):
 
 {
   "timetable": [
@@ -412,19 +539,14 @@ Return ONLY valid JSON:
       "courseCode": "CSC 201"
     }
   ],
-  "motivationalQuote": "Success is the sum of small efforts repeated daily."
+  "motivationalQuote": "Success is the sum of small efforts repeated day in and day out."
 }
 
-VERIFY:
-✓ Minimum time met per course
-✓ Low-difficulty NOT daily
-✓ Sessions 45-120 min
-✓ Excluded days empty
-✓ Rest day included`;
+REMEMBER: A great timetable is challenging but sustainable. Push the student, but don't break them.`;
     }
 
     // ============================================
-    // 8. RATE LIMITING
+    // RATE LIMITING
     // ============================================
     
     function checkRateLimit() {
@@ -450,7 +572,7 @@ VERIFY:
     }
 
     // ============================================
-    // 9. UI STATE MANAGEMENT
+    // UI STATE MANAGEMENT
     // ============================================
     
     function showLoading() {
@@ -483,7 +605,7 @@ VERIFY:
     }
 
     // ============================================
-    // 10. LOADING ANIMATION
+    // LOADING ANIMATION
     // ============================================
     
     function startLoadingAnimation() {
@@ -514,7 +636,7 @@ VERIFY:
     }
 
     // ============================================
-    // 11. TIMETABLE BUILDERS (MOBILE OPTIMIZED)
+    // TIMETABLE BUILDERS (MOBILE OPTIMIZED)
     // ============================================
     
     function buildSchoolStyleTimetable(timetableData, studentName, theme) {
@@ -533,7 +655,7 @@ VERIFY:
 
         let html = `
             <div class="timetable-container" id="timetable-export" style="position: relative; background: ${themeColors.rowBg}; padding: 2rem; max-width: 100%; overflow-x: auto;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; font-weight: 900; color: rgba(${themeColors.watermark === '#6366f1' ? '99,102,241' : themeColors.watermark === '#0ea5e9' ? '14,165,233' : themeColors.watermark === '#f97316' ? '249,115,22' : themeColors.watermark === '#059669' ? '5,150,105' : themeColors.watermark === '#ca8a04' ? '202,138,4' : themeColors.watermark === '#7c3aed' ? '124,58,237' : themeColors.watermark === '#1e40af' ? '30,64,175' : themeColors.watermark === '#0891b2' ? '8,145,178' : themeColors.watermark === '#047857' ? '4,120,87' : '220,38,38'},0.03); pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; font-weight: 900; color: ${themeColors.watermark}15; pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
                 <div style="position: absolute; bottom: 0.5rem; right: 0.5rem; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.8; z-index: 10; font-weight: 600;">Generated by CramBot.site</div>
                 <div style="position: relative; z-index: 1;">
                     ${studentName ? `<h2 style="text-align: center; margin-bottom: 0.5rem; color: ${themeColors.text}; font-size: 1.5rem;">${studentName}</h2>` : ''}
@@ -570,10 +692,9 @@ VERIFY:
             rowIndex++;
         }
 
-        const headerColor = themeColors.watermark;
         html += `</tbody></table>
                     </div>
-                    <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${headerColor}; border-radius: 6px; text-align: center;">
+                    <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${themeColors.watermark}; border-radius: 6px; text-align: center;">
                         <p style="font-style: italic; color: ${themeColors.text}; font-size: 0.9rem; margin: 0;">"${motivationalQuote}"</p>
                     </div>
                 </div>
@@ -589,7 +710,7 @@ VERIFY:
 
         let html = `
             <div class="timetable-container" id="timetable-export" style="position: relative; background: ${themeColors.rowBg}; padding: 2rem; max-width: 100%;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; font-weight: 900; color: rgba(${themeColors.watermark === '#6366f1' ? '99,102,241' : themeColors.watermark === '#0ea5e9' ? '14,165,233' : themeColors.watermark === '#f97316' ? '249,115,22' : themeColors.watermark === '#059669' ? '5,150,105' : themeColors.watermark === '#ca8a04' ? '202,138,4' : themeColors.watermark === '#7c3aed' ? '124,58,237' : themeColors.watermark === '#1e40af' ? '30,64,175' : themeColors.watermark === '#0891b2' ? '8,145,178' : themeColors.watermark === '#047857' ? '4,120,87' : '220,38,38'},0.03); pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; font-weight: 900; color: ${themeColors.watermark}15; pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
                 <div style="position: absolute; bottom: 0.5rem; right: 0.5rem; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.8; z-index: 10; font-weight: 600;">Generated by CramBot.site</div>
                 <div style="position: relative; z-index: 1;">
                     ${studentName ? `<h2 style="text-align: center; margin-bottom: 0.5rem; color: ${themeColors.text}; font-size: 1.5rem;">${studentName}</h2>` : ''}
@@ -611,10 +732,9 @@ VERIFY:
             </tr>`;
         });
 
-        const headerColor = themeColors.watermark;
         html += `</tbody></table>
                     </div>
-                    <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${headerColor}; border-radius: 6px; text-align: center;">
+                    <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${themeColors.watermark}; border-radius: 6px; text-align: center;">
                         <p style="font-style: italic; color: ${themeColors.text}; font-size: 0.9rem; margin: 0;">"${motivationalQuote}"</p>
                     </div>
                 </div>
@@ -663,7 +783,7 @@ VERIFY:
     }
 
     // ============================================
-    // 12. SHARE FUNCTION (IMPROVED)
+    // SHARE FUNCTION (VIRAL TEXT)
     // ============================================
     
     function generateShareText(studentName) {
@@ -726,11 +846,37 @@ Get yours: crambot.site
                 return;
             }
 
-            const dataUrl = await htmlToImage.toPng(element, {
+            const clone = element.cloneNode(true);
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.top = '0';
+            clone.style.width = 'auto';
+            clone.style.minWidth = 'auto';
+            clone.style.maxWidth = 'none';
+            clone.style.overflow = 'visible';
+            
+            const tables = clone.querySelectorAll('table');
+            tables.forEach(table => {
+                table.style.width = 'auto';
+                table.style.minWidth = 'auto';
+            });
+            
+            const scrollDivs = clone.querySelectorAll('div[style*="overflow"]');
+            scrollDivs.forEach(div => {
+                div.style.overflow = 'visible';
+            });
+
+            document.body.appendChild(clone);
+
+            const dataUrl = await htmlToImage.toPng(clone, {
                 quality: 1,
                 backgroundColor: THEMES[state.selectedTheme].rowBg,
-                pixelRatio: 2
+                pixelRatio: 2,
+                width: clone.scrollWidth,
+                height: clone.scrollHeight
             });
+
+            document.body.removeChild(clone);
 
             const blob = await (await fetch(dataUrl)).blob();
             const file = new File([blob], `crambot-timetable-${Date.now()}.png`, { type: 'image/png' });
@@ -754,7 +900,7 @@ Get yours: crambot.site
     }
 
     // ============================================
-    // 13. MAIN TIMETABLE GENERATION
+    // MAIN TIMETABLE GENERATION
     // ============================================
     
     async function generateTimetable() {
@@ -789,7 +935,7 @@ Get yours: crambot.site
                     messages: [
                         {
                             role: "system",
-                            content: "You are an expert academic study planner. Generate responses ONLY in valid JSON format."
+                            content: "You are Dr. Sarah Chen, a cognitive science professor. Generate responses ONLY in valid JSON format. Follow ALL rules exactly."
                         },
                         {
                             role: "user",
@@ -876,7 +1022,7 @@ Get yours: crambot.site
     }
 
     // ============================================
-    // 14. EXPORT FUNCTIONS (FIXED PDF)
+    // EXPORT FUNCTIONS (FULL WIDTH CAPTURE)
     // ============================================
     
     async function exportAsImage() {
@@ -892,11 +1038,37 @@ Get yours: crambot.site
                 return;
             }
 
-            const dataUrl = await htmlToImage.toPng(element, {
+            const clone = element.cloneNode(true);
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.top = '0';
+            clone.style.width = 'auto';
+            clone.style.minWidth = 'auto';
+            clone.style.maxWidth = 'none';
+            clone.style.overflow = 'visible';
+            
+            const tables = clone.querySelectorAll('table');
+            tables.forEach(table => {
+                table.style.width = 'auto';
+                table.style.minWidth = 'auto';
+            });
+            
+            const scrollDivs = clone.querySelectorAll('div[style*="overflow"]');
+            scrollDivs.forEach(div => {
+                div.style.overflow = 'visible';
+            });
+
+            document.body.appendChild(clone);
+
+            const dataUrl = await htmlToImage.toPng(clone, {
                 quality: 1,
                 backgroundColor: THEMES[state.selectedTheme].rowBg,
-                pixelRatio: 2
+                pixelRatio: 2,
+                width: clone.scrollWidth,
+                height: clone.scrollHeight
             });
+
+            document.body.removeChild(clone);
 
             const link = document.createElement('a');
             link.download = `crambot-timetable-${Date.now()}.png`;
@@ -916,7 +1088,6 @@ Get yours: crambot.site
         }
 
         try {
-            // Check if libraries are loaded
             if (typeof htmlToImage === 'undefined') {
                 showError('Export library not loaded. Please refresh the page.');
                 return;
@@ -927,24 +1098,51 @@ Get yours: crambot.site
                 return;
             }
 
-            // Convert to image first
-            const dataUrl = await htmlToImage.toPng(element, {
+            const clone = element.cloneNode(true);
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.top = '0';
+            clone.style.width = 'auto';
+            clone.style.minWidth = 'auto';
+            clone.style.maxWidth = 'none';
+            clone.style.overflow = 'visible';
+            
+            const tables = clone.querySelectorAll('table');
+            tables.forEach(table => {
+                table.style.width = 'auto';
+                table.style.minWidth = 'auto';
+            });
+            
+            const scrollDivs = clone.querySelectorAll('div[style*="overflow"]');
+            scrollDivs.forEach(div => {
+                div.style.overflow = 'visible';
+            });
+
+            document.body.appendChild(clone);
+
+            const dataUrl = await htmlToImage.toPng(clone, {
                 quality: 1,
                 backgroundColor: THEMES[state.selectedTheme].rowBg,
                 pixelRatio: 2,
-                width: element.scrollWidth,
-                height: element.scrollHeight
+                width: clone.scrollWidth,
+                height: clone.scrollHeight
             });
 
-            // Create PDF
+            document.body.removeChild(clone);
+
             const { jsPDF } = window.jspdf;
+            
+            const imgWidth = clone.scrollWidth;
+            const imgHeight = clone.scrollHeight;
+            
+            const orientation = imgWidth > imgHeight ? 'landscape' : 'portrait';
             const pdf = new jsPDF({
-                orientation: 'portrait',
+                orientation: orientation,
                 unit: 'px',
-                format: [element.scrollWidth, element.scrollHeight]
+                format: [imgWidth, imgHeight]
             });
 
-            pdf.addImage(dataUrl, 'PNG', 0, 0, element.scrollWidth, element.scrollHeight);
+            pdf.addImage(dataUrl, 'PNG', 0, 0, imgWidth, imgHeight);
             pdf.save(`crambot-timetable-${Date.now()}.pdf`);
 
         } catch (error) {
@@ -954,7 +1152,7 @@ Get yours: crambot.site
     }
 
     // ============================================
-    // 15. EVENT LISTENERS
+    // EVENT LISTENERS
     // ============================================
     
     function initializeEventListeners() {
@@ -1008,7 +1206,7 @@ Get yours: crambot.site
     }
 
     // ============================================
-    // 16. INITIALIZATION
+    // INITIALIZATION
     // ============================================
     
     function init() {
@@ -1016,8 +1214,8 @@ Get yours: crambot.site
         addCourse();
         initializeEventListeners();
         
-        console.log('%c🧠 CramBot Ready (Updated Version)!', 'color: #6366f1; font-size: 20px; font-weight: bold;');
-        console.log('%cAll fixes applied! ✅', 'color: #10b981; font-size: 14px;');
+        console.log('%c🧠 CramBot Ready! (Algorithm-Matched Version)', 'color: #6366f1; font-size: 20px; font-weight: bold;');
+        console.log('%c✅ Implements ALGORITHM_GUIDE.txt exactly', 'color: #10b981;');
     }
 
     init();
