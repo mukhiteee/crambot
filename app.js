@@ -1,6 +1,6 @@
 // ============================================
-// CRAMBOT - CLEAN & ORGANIZED JAVASCRIPT
-// AI-Powered Study Timetable Generator
+// CRAMBOT - UPDATED & FIXED VERSION
+// All issues resolved + Mobile optimized
 // ============================================
 
 (function() {
@@ -11,7 +11,7 @@
     // ============================================
     
     const CONFIG = {
-        GROQ_API_KEY: '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',
+        GROQ_API_KEY: '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', // Get from https://console.groq.com
         GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions',
         MODEL: 'llama-3.3-70b-versatile',
         RATE_LIMIT_MINUTES: 10
@@ -26,7 +26,8 @@
             rowBg: '#ffffff',
             rowAlt: '#f8f9fa',
             text: '#1a1a1a',
-            border: '#e0e0e0'
+            border: '#e0e0e0',
+            watermark: '#6366f1'
         },
         ocean: {
             name: 'Ocean Blue',
@@ -35,7 +36,8 @@
             rowBg: '#ffffff',
             rowAlt: '#f0f9ff',
             text: '#0c4a6e',
-            border: '#bae6fd'
+            border: '#bae6fd',
+            watermark: '#0ea5e9'
         },
         sunset: {
             name: 'Sunset Orange',
@@ -44,7 +46,8 @@
             rowBg: '#ffffff',
             rowAlt: '#fff7ed',
             text: '#7c2d12',
-            border: '#fed7aa'
+            border: '#fed7aa',
+            watermark: '#f97316'
         },
         forest: {
             name: 'Forest Green',
@@ -53,7 +56,8 @@
             rowBg: '#ffffff',
             rowAlt: '#f0fdf4',
             text: '#064e3b',
-            border: '#a7f3d0'
+            border: '#a7f3d0',
+            watermark: '#059669'
         },
         royal: {
             name: 'Royal Gold',
@@ -62,54 +66,60 @@
             rowBg: '#ffffff',
             rowAlt: '#fefce8',
             text: '#713f12',
-            border: '#fde047'
+            border: '#fde047',
+            watermark: '#ca8a04'
         },
         
-        // Dark Themes
+        // Dark Themes - Enhanced!
         darkPurple: {
             name: 'Dark Purple',
-            headerBg: 'linear-gradient(135deg, #7c3aed, #6366f1)',
+            headerBg: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
             headerText: '#ffffff',
-            rowBg: '#1a1a2e',
-            rowAlt: '#16213e',
-            text: '#e5e5e5',
-            border: '#2d3748'
+            rowBg: '#1e1b4b',
+            rowAlt: '#312e81',
+            text: '#e0e7ff',
+            border: '#4c1d95',
+            watermark: '#7c3aed'
         },
         darkBlue: {
             name: 'Dark Blue',
-            headerBg: 'linear-gradient(135deg, #1e40af, #3b82f6)',
+            headerBg: 'linear-gradient(135deg, #1e40af, #60a5fa)',
             headerText: '#ffffff',
-            rowBg: '#0f172a',
-            rowAlt: '#1e293b',
+            rowBg: '#1e293b',
+            rowAlt: '#334155',
             text: '#e2e8f0',
-            border: '#334155'
+            border: '#475569',
+            watermark: '#1e40af'
         },
         darkCyan: {
             name: 'Dark Cyan',
-            headerBg: 'linear-gradient(135deg, #0891b2, #06b6d4)',
+            headerBg: 'linear-gradient(135deg, #0891b2, #22d3ee)',
             headerText: '#ffffff',
             rowBg: '#164e63',
             rowAlt: '#155e75',
-            text: '#e0f2fe',
-            border: '#0e7490'
+            text: '#cffafe',
+            border: '#0e7490',
+            watermark: '#0891b2'
         },
         darkGreen: {
             name: 'Dark Green',
-            headerBg: 'linear-gradient(135deg, #047857, #10b981)',
+            headerBg: 'linear-gradient(135deg, #047857, #34d399)',
             headerText: '#ffffff',
             rowBg: '#064e3b',
             rowAlt: '#065f46',
             text: '#d1fae5',
-            border: '#059669'
+            border: '#059669',
+            watermark: '#047857'
         },
         darkRed: {
             name: 'Dark Red',
-            headerBg: 'linear-gradient(135deg, #dc2626, #ef4444)',
+            headerBg: 'linear-gradient(135deg, #dc2626, #f87171)',
             headerText: '#ffffff',
             rowBg: '#7f1d1d',
             rowAlt: '#991b1b',
             text: '#fee2e2',
-            border: '#b91c1c'
+            border: '#b91c1c',
+            watermark: '#dc2626'
         }
     };
 
@@ -139,30 +149,21 @@
     // ============================================
     
     const elements = {
-        // Theme
         themeToggle: document.getElementById('theme-toggle'),
         themeIcon: document.querySelector('.theme-icon'),
         html: document.documentElement,
-        
-        // Form
         timetableForm: document.getElementById('timetable-form'),
         studentNameInput: document.getElementById('student-name'),
         courseList: document.getElementById('course-list'),
         addCourseBtn: document.getElementById('add-course-btn'),
         studyHoursInput: document.getElementById('study-hours'),
         customDatesDiv: document.getElementById('custom-dates'),
-        
-        // Sections
         loadingSection: document.getElementById('loading-section'),
         errorSection: document.getElementById('error-section'),
         outputSection: document.getElementById('output-section'),
-        
-        // Messages
         loadingMessage: document.getElementById('loading-message'),
         loadingSubmessage: document.getElementById('loading-submessage'),
         errorMessage: document.getElementById('error-message'),
-        
-        // Output
         timetableDisplay: document.getElementById('timetable-display'),
         exportImageBtn: document.getElementById('export-image-btn'),
         exportPdfBtn: document.getElementById('export-pdf-btn'),
@@ -249,7 +250,6 @@
     function collectFormData() {
         const studentName = elements.studentNameInput.value.trim();
         
-        // Collect courses
         const courses = [];
         const courseItems = elements.courseList.querySelectorAll('.course-item');
         
@@ -272,10 +272,8 @@
             return null;
         }
 
-        // Calculate total credits
         const totalCredits = courses.reduce((sum, course) => sum + (course.credit || 0), 0);
 
-        // Collect preferences
         const studyHours = elements.studyHoursInput.value;
         const excludedDays = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
             .map(cb => cb.value);
@@ -308,13 +306,12 @@
     }
 
     // ============================================
-    // 7. AI PROMPT GENERATION
+    // 7. AI PROMPT GENERATION (IMPROVED ALGORITHM)
     // ============================================
     
     function generatePrompt(data) {
         const { courses, totalCredits, studyHours, excludedDays, studyTime, duration, startDate, endDate } = data;
 
-        // Build course list
         const courseList = courses.map(course => {
             if (course.credit) {
                 return `- ${course.courseCode}: ${course.courseTitle} (${course.credit} units)`;
@@ -322,143 +319,89 @@
             return `- ${course.courseCode}: ${course.courseTitle} (credit unit not provided)`;
         }).join('\n');
 
-        // Study hours text
-        const studyHoursText = studyHours 
-            ? `${studyHours} hours` 
-            : 'Not specified (AI should recommend)';
-        
+        const studyHoursText = studyHours ? `${studyHours} hours` : 'Not specified (AI should recommend)';
         const studyHoursRule = studyHours
-            ? `Distribute approximately ${studyHours} hours per day across courses based on difficulty scores. Higher difficulty courses get proportionally more time.`
-            : 'Calculate recommended study hours based on total difficulty score of all courses. Recommend between 2-8 hours per day depending on course load. Higher difficulty = more daily hours.';
+            ? `Distribute approximately ${studyHours} hours per day across courses based on difficulty scores.`
+            : 'Calculate recommended study hours (2-8 hours/day) based on total difficulty.';
 
-        // Excluded days text
-        const excludedDaysText = excludedDays 
-            ? excludedDays.join(', ') 
-            : 'None (all days available)';
-
-        // Study time text
+        const excludedDaysText = excludedDays ? excludedDays.join(', ') : 'None (all days available)';
         const studyTimeText = studyTime || 'Not specified';
         const studyTimeRule = studyTime
-            ? `${studyTime} is the PREFERRED time (not mandatory). Aim for 60-70% of sessions during ${studyTime}. If difficulty scores are high or total study time increases, distribute sessions across other times of day to avoid jam-packing. Balance is key.`
-            : 'Use Evening as default preference (60-70% of sessions), but distribute flexibly across the day based on course load. Avoid scheduling all sessions at the same time. Evening = 4PM-8PM.';
+            ? `${studyTime} is PREFERRED (aim for 60-70% of sessions). If difficulty is high, use other times too.`
+            : 'Use Evening as default (60-70%), but distribute flexibly. Evening = 4PM-8PM.';
 
-        // Duration rule
         let durationRule;
         if (duration === 'Weekly') {
-            durationRule = `Generate a 7-day weekly timetable (Monday-Sunday). Exclude days from excluded list. Use 'day' field in JSON (e.g., 'Monday').`;
+            durationRule = `Generate 7-day weekly timetable (Monday-Sunday). Exclude ${excludedDaysText}. Use 'day' field (e.g., 'Monday').`;
         } else if (duration === 'Monthly') {
-            durationRule = `Generate a 4-week (28-day) monthly timetable. Exclude specified days each week. Use 'day' field with dates (e.g., 'January 20', 'January 21').`;
-        } else if (duration === 'Custom') {
-            durationRule = `Generate a timetable from ${startDate} to ${endDate}. Exclude specified days. Use 'day' field with actual dates in format 'YYYY-MM-DD'.`;
+            durationRule = `Generate 4-week (28-day) monthly timetable. Use 'day' field with dates (e.g., 'January 20').`;
+        } else {
+            durationRule = `Generate timetable from ${startDate} to ${endDate}. Use 'day' in format 'YYYY-MM-DD'.`;
         }
 
-        return `You are Dr. Sarah Chen, a cognitive science professor and academic performance consultant with 15+ years of experience helping students optimize their study schedules. You've worked with thousands of students and understand the psychology of learning, retention, and burnout prevention.
+        return `You are Dr. Sarah Chen, cognitive science professor with 15+ years experience helping students optimize study schedules.
 
-TASK: Create a scientifically-backed, personalized study timetable that maximizes retention while preventing burnout.
+TASK: Create a scientifically-backed, personalized study timetable.
 
-===== STEP 1: DEEP COURSE ANALYSIS =====
+===== STEP 1: COURSE DIFFICULTY ANALYSIS (0-100) =====
 
-For EACH course, calculate a comprehensive difficulty score (0-100) using these factors:
+For EACH course, calculate difficulty:
 
-A) CREDIT WEIGHT (if provided):
-   - Each credit unit = 10 points baseline
-   - 1 credit = 10 points, 2 credits = 20 points, etc.
+A) CREDIT WEIGHT: Each credit = 10 points baseline
 
-B) COURSE COMPLEXITY ANALYSIS:
-   Research the course title and consider:
-   
-   1. Subject Difficulty (+0 to +30 points):
-      - Introductory/100-level: +5 points
-      - Intermediate/200-level: +10 points  
-      - Advanced/300-level: +20 points
-      - Expert/400+ level: +30 points
-   
-   2. Cognitive Load (+0 to +25 points):
-      - Memorization-heavy (History, Biology): +10
-      - Application-heavy (Math, Programming): +20
-      - Synthesis-heavy (Philosophy, Research): +25
-   
-   3. Prerequisites (+0 to +15 points):
-      - No prerequisites: +0
-      - 1-2 prerequisites: +8
-      - 3+ prerequisites: +15
-   
-   4. Typical Workload (+0 to +20 points):
-      - Light reading/practice: +5
-      - Moderate assignments: +10
-      - Heavy projects/labs: +15
-      - Thesis/capstone level: +20
+B) COMPLEXITY FACTORS:
+   - Level: Intro(+5), Intermediate(+10), Advanced(+20), Expert(+30)
+   - Cognitive Load: Memorization(+10), Application(+20), Synthesis(+25)
+   - Prerequisites: None(+0), 1-2(+8), 3+(+15)
+   - Workload: Light(+5), Moderate(+10), Heavy(+15), Thesis(+20)
 
-C) FINAL DIFFICULTY SCORE:
-   - If credit provided: (Credit Weight × 0.5) + (Complexity Score × 0.5)
-   - If NO credit: Use full Complexity Score
+C) FINAL SCORE:
+   If credit provided: (Credit×0.5) + (Complexity×0.5)
+   If NO credit: Full Complexity Score
 
-===== STEP 2: SMART TIME ALLOCATION =====
+===== STEP 2: TIME ALLOCATION =====
 
-For each course, calculate weekly study requirement:
+MINIMUM = Credit × 60 minutes/week
 
-MINIMUM TIME = Credit Units × 60 minutes (non-negotiable baseline)
+ADJUSTED TIME:
+- Low (0-40): Minimum only
+- Medium (41-70): +20-30%
+- High (71-85): +40-50%
+- Expert (86-100): +60-80%
 
-ADJUSTED TIME based on difficulty:
-- Low difficulty (0-40): Use minimum time only
-- Medium difficulty (41-70): Add 20-30% to minimum
-- High difficulty (71-85): Add 40-50% to minimum  
-- Expert difficulty (86-100): Add 60-80% to minimum
+FREQUENCY:
+- Low: 2-3 sessions/week
+- Medium: 4-5 sessions/week
+- High: 5-6 sessions/week
+- Expert: 6-7 sessions/week
 
-FREQUENCY RULES:
-- Low difficulty (0-40): 2-3 sessions/week (allow gaps for absorption)
-- Medium difficulty (41-70): 4-5 sessions/week
-- High difficulty (71-85): 5-6 sessions/week
-- Expert difficulty (86-100): 6-7 sessions/week (near-daily)
+SESSION LENGTH: 45-120 min (ideal 60-90 min)
 
-SESSION LENGTH OPTIMIZATION:
-- Ideal session: 60-90 minutes (peak focus window)
-- Minimum session: 45 minutes (anything less is ineffective)
-- Maximum session: 120 minutes (diminishing returns after)
-- NEVER schedule 3+ hour marathon sessions
-
-===== STEP 3: STUDENT DATA =====
+===== STUDENT DATA =====
 COURSES:
 ${courseList}
 
-TOTAL CREDITS: ${totalCredits || 'Not applicable'}
-AVAILABLE STUDY HOURS PER DAY: ${studyHoursText}
+TOTAL CREDITS: ${totalCredits || 'N/A'}
+STUDY HOURS/DAY: ${studyHoursText}
 EXCLUDED DAYS: ${excludedDaysText}
-PREFERRED STUDY TIME: ${studyTimeText}
-TIMETABLE DURATION: ${duration}
+PREFERRED TIME: ${studyTimeText}
+DURATION: ${duration}
 
-===== STEP 4: SCHEDULING STRATEGY =====
+===== SCHEDULING RULES =====
 
-CORE RULES:
-1. RESPECT MINIMUM TIME: Each course MUST get Credit × 60 min/week minimum
-2. DIFFICULTY-BASED FREQUENCY: Follow the frequency rules above strictly
+1. MINIMUM TIME: Each course MUST get Credit × 60 min/week
+2. FREQUENCY: Follow difficulty-based frequency rules
 3. ${studyHoursRule}
-4. ABSOLUTE DAY EXCLUSION: NEVER schedule on ${excludedDaysText}
-5. TIME PREFERENCE: ${studyTimeRule}
+4. NO SESSIONS ON: ${excludedDaysText}
+5. ${studyTimeRule}
+6. SPACING: Space sessions 1-2 days apart
+7. ANTI-BURNOUT: If >4 hours/day, spread across time blocks
+8. GAPS: 30-min minimum between sessions
+9. REST DAY: Include 1 rest day in weekly schedules
+10. ${durationRule}
 
-COGNITIVE OPTIMIZATION:
-1. SPACING EFFECT: Space sessions 1-2 days apart when possible (better retention)
-2. INTERLEAVING: Alternate subjects rather than blocking same subject
-3. TIME-OF-DAY MATCHING:
-   - High-difficulty courses → Peak energy times (morning or early evening)
-   - Medium-difficulty → Flexible placement
-   - Low-difficulty → Can use off-peak times
-4. ENERGY MANAGEMENT: Never stack 3+ high-difficulty courses in one day
-
-ANTI-BURNOUT MEASURES:
-1. NO JAM-PACKING: If daily study > 4 hours, MUST spread across multiple time slots
-   - Example: Don't do 5 hours straight 4PM-9PM
-   - Instead: 2 hours morning, 1.5 hours afternoon, 1.5 hours evening
-2. BREATHING SPACE: Minimum 30-minute gap between sessions (brain reset time)
-3. WEEKLY VARIATION: Vary start times by 30-60 minutes to prevent monotony
-4. ONE REST DAY: If weekly schedule, include 1 complete rest day (no study)
-
-DURATION LOGIC:
-${durationRule}
-
-===== STEP 5: OUTPUT FORMAT =====
-
-Return ONLY valid JSON (no markdown, no explanations):
+===== OUTPUT FORMAT =====
+Return ONLY valid JSON:
 
 {
   "timetable": [
@@ -469,22 +412,15 @@ Return ONLY valid JSON (no markdown, no explanations):
       "courseCode": "CSC 201"
     }
   ],
-  "motivationalQuote": "Success is the sum of small efforts repeated day in and day out."
+  "motivationalQuote": "Success is the sum of small efforts repeated daily."
 }
 
-===== QUALITY CHECKLIST =====
-Before returning, verify:
-✓ Each course meets minimum weekly time (Credit × 60 min)
-✓ Low-difficulty courses appear 2-3x/week (not daily)
-✓ High-difficulty courses appear 5-7x/week
-✓ No sessions longer than 120 minutes
-✓ Daily study spread across multiple time blocks if > 4 hours
-✓ Sessions spaced 1-2 days apart when possible
-✓ Excluded days have ZERO sessions
-✓ 60-70% of sessions in preferred time (if specified)
-✓ At least one complete rest day in weekly schedules
-
-REMEMBER: A great timetable is challenging but sustainable. Push the student, but don't break them.`;
+VERIFY:
+✓ Minimum time met per course
+✓ Low-difficulty NOT daily
+✓ Sessions 45-120 min
+✓ Excluded days empty
+✓ Rest day included`;
     }
 
     // ============================================
@@ -493,7 +429,6 @@ REMEMBER: A great timetable is challenging but sustainable. Push the student, bu
     
     function checkRateLimit() {
         const lastRequest = localStorage.getItem('crambot-last-request');
-        
         if (!lastRequest) return { allowed: true };
         
         const timeDiff = Date.now() - parseInt(lastRequest);
@@ -579,14 +514,13 @@ REMEMBER: A great timetable is challenging but sustainable. Push the student, bu
     }
 
     // ============================================
-    // 11. TIMETABLE BUILDERS
+    // 11. TIMETABLE BUILDERS (MOBILE OPTIMIZED)
     // ============================================
     
     function buildSchoolStyleTimetable(timetableData, studentName, theme) {
         const { timetable, motivationalQuote } = timetableData;
         const themeColors = THEMES[theme];
         
-        // Group by day
         const groupedByDay = {};
         timetable.forEach(session => {
             if (!groupedByDay[session.day]) {
@@ -598,18 +532,19 @@ REMEMBER: A great timetable is challenging but sustainable. Push the student, bu
         const maxCoursesPerDay = Math.max(...Object.values(groupedByDay).map(arr => arr.length));
 
         let html = `
-            <div class="timetable-container" id="timetable-export" style="position: relative; background: white; padding: 3rem;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(0,0,0,0.02); pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
-                <div style="position: absolute; bottom: 1rem; right: 1rem; font-size: 0.75rem; color: rgba(0,0,0,0.3); z-index: 10;">Generated by CramBot.com</div>
+            <div class="timetable-container" id="timetable-export" style="position: relative; background: ${themeColors.rowBg}; padding: 2rem; max-width: 100%; overflow-x: auto;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; font-weight: 900; color: rgba(${themeColors.watermark === '#6366f1' ? '99,102,241' : themeColors.watermark === '#0ea5e9' ? '14,165,233' : themeColors.watermark === '#f97316' ? '249,115,22' : themeColors.watermark === '#059669' ? '5,150,105' : themeColors.watermark === '#ca8a04' ? '202,138,4' : themeColors.watermark === '#7c3aed' ? '124,58,237' : themeColors.watermark === '#1e40af' ? '30,64,175' : themeColors.watermark === '#0891b2' ? '8,145,178' : themeColors.watermark === '#047857' ? '4,120,87' : '220,38,38'},0.03); pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
+                <div style="position: absolute; bottom: 0.5rem; right: 0.5rem; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.8; z-index: 10; font-weight: 600;">Generated by CramBot.site</div>
                 <div style="position: relative; z-index: 1;">
-                    ${studentName ? `<h2 style="text-align: center; margin-bottom: 0.5rem; color: ${themeColors.text}; font-size: 1.8rem;">${studentName}</h2>` : ''}
-                    <p style="text-align: center; color: ${themeColors.text}; opacity: 0.7; margin-bottom: 2rem; font-size: 0.9rem;">Study Timetable</p>
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+                    ${studentName ? `<h2 style="text-align: center; margin-bottom: 0.5rem; color: ${themeColors.text}; font-size: 1.5rem;">${studentName}</h2>` : ''}
+                    <p style="text-align: center; color: ${themeColors.text}; opacity: 0.7; margin-bottom: 1.5rem; font-size: 0.85rem;">Study Timetable</p>
+                    <div style="overflow-x: auto;">
+                    <table style="width: 100%; min-width: 600px; border-collapse: collapse; margin-bottom: 1.5rem;">
                         <thead><tr>
-                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 1rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700;">Day/Date</th>`;
+                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 0.75rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700; font-size: 0.9rem;">Day/Date</th>`;
 
         for (let i = 1; i <= maxCoursesPerDay; i++) {
-            html += `<th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 1rem; text-align: center; border: 1px solid ${themeColors.border}; font-weight: 700;">Session ${i}</th>`;
+            html += `<th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 0.75rem; text-align: center; border: 1px solid ${themeColors.border}; font-weight: 700; font-size: 0.9rem;">Session ${i}</th>`;
         }
 
         html += `</tr></thead><tbody>`;
@@ -618,27 +553,28 @@ REMEMBER: A great timetable is challenging but sustainable. Push the student, bu
         for (const [day, sessions] of Object.entries(groupedByDay)) {
             const rowBg = rowIndex % 2 === 0 ? themeColors.rowBg : themeColors.rowAlt;
             html += `<tr style="background: ${rowBg};">`;
-            html += `<td style="padding: 1rem; border: 1px solid ${themeColors.border}; font-weight: 600; color: ${themeColors.text};">${day}</td>`;
+            html += `<td style="padding: 0.75rem; border: 1px solid ${themeColors.border}; font-weight: 600; color: ${themeColors.text}; font-size: 0.85rem;">${day}</td>`;
             
             sessions.forEach(session => {
-                html += `<td style="padding: 1rem; border: 1px solid ${themeColors.border}; text-align: center; color: ${themeColors.text};">
-                    <div style="font-weight: 700; margin-bottom: 0.25rem;">${session.courseCode}</div>
-                    <div style="font-size: 0.85rem; opacity: 0.7;">${session.startTime} - ${session.endTime}</div>
+                html += `<td style="padding: 0.75rem; border: 1px solid ${themeColors.border}; text-align: center; color: ${themeColors.text};">
+                    <div style="font-weight: 700; margin-bottom: 0.25rem; font-size: 0.9rem;">${session.courseCode}</div>
+                    <div style="font-size: 0.75rem; opacity: 0.8;">${session.startTime} - ${session.endTime}</div>
                 </td>`;
             });
             
             for (let i = sessions.length; i < maxCoursesPerDay; i++) {
-                html += `<td style="padding: 1rem; border: 1px solid ${themeColors.border}; background: rgba(0,0,0,0.02);"></td>`;
+                html += `<td style="padding: 0.75rem; border: 1px solid ${themeColors.border}; background: rgba(0,0,0,0.02);"></td>`;
             }
             
             html += `</tr>`;
             rowIndex++;
         }
 
-        const headerColor = themeColors.headerBg.split(',')[0].replace('linear-gradient(135deg', '').trim();
+        const headerColor = themeColors.watermark;
         html += `</tbody></table>
-                    <div style="padding: 1.5rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${headerColor}; border-radius: 8px; text-align: center;">
-                        <p style="font-style: italic; color: ${themeColors.text}; font-size: 1rem;">"${motivationalQuote}"</p>
+                    </div>
+                    <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${headerColor}; border-radius: 6px; text-align: center;">
+                        <p style="font-style: italic; color: ${themeColors.text}; font-size: 0.9rem; margin: 0;">"${motivationalQuote}"</p>
                     </div>
                 </div>
             </div>`;
@@ -652,32 +588,34 @@ REMEMBER: A great timetable is challenging but sustainable. Push the student, bu
         const dayLabel = timetable[0]?.day?.includes('-') || timetable[0]?.day?.match(/\d/) ? 'Date' : 'Day';
 
         let html = `
-            <div class="timetable-container" id="timetable-export" style="position: relative; background: white; padding: 3rem;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 6rem; font-weight: 900; color: rgba(0,0,0,0.02); pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
-                <div style="position: absolute; bottom: 1rem; right: 1rem; font-size: 0.75rem; color: rgba(0,0,0,0.3); z-index: 10;">Generated by CramBot.com</div>
+            <div class="timetable-container" id="timetable-export" style="position: relative; background: ${themeColors.rowBg}; padding: 2rem; max-width: 100%;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 4rem; font-weight: 900; color: rgba(${themeColors.watermark === '#6366f1' ? '99,102,241' : themeColors.watermark === '#0ea5e9' ? '14,165,233' : themeColors.watermark === '#f97316' ? '249,115,22' : themeColors.watermark === '#059669' ? '5,150,105' : themeColors.watermark === '#ca8a04' ? '202,138,4' : themeColors.watermark === '#7c3aed' ? '124,58,237' : themeColors.watermark === '#1e40af' ? '30,64,175' : themeColors.watermark === '#0891b2' ? '8,145,178' : themeColors.watermark === '#047857' ? '4,120,87' : '220,38,38'},0.03); pointer-events: none; white-space: nowrap; z-index: 0;">CRAMBOT</div>
+                <div style="position: absolute; bottom: 0.5rem; right: 0.5rem; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.8; z-index: 10; font-weight: 600;">Generated by CramBot.site</div>
                 <div style="position: relative; z-index: 1;">
-                    ${studentName ? `<h2 style="text-align: center; margin-bottom: 0.5rem; color: ${themeColors.text}; font-size: 1.8rem;">${studentName}</h2>` : ''}
-                    <p style="text-align: center; color: ${themeColors.text}; opacity: 0.7; margin-bottom: 2rem; font-size: 0.9rem;">Study Timetable</p>
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+                    ${studentName ? `<h2 style="text-align: center; margin-bottom: 0.5rem; color: ${themeColors.text}; font-size: 1.5rem;">${studentName}</h2>` : ''}
+                    <p style="text-align: center; color: ${themeColors.text}; opacity: 0.7; margin-bottom: 1.5rem; font-size: 0.85rem;">Study Timetable</p>
+                    <div style="overflow-x: auto;">
+                    <table style="width: 100%; min-width: 500px; border-collapse: collapse; margin-bottom: 1.5rem;">
                         <thead><tr>
-                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 1rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700;">${dayLabel}</th>
-                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 1rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700;">Duration</th>
-                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 1rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700;">Course</th>
+                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 0.75rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700; font-size: 0.9rem;">${dayLabel}</th>
+                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 0.75rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700; font-size: 0.9rem;">Duration</th>
+                            <th style="background: ${themeColors.headerBg}; color: ${themeColors.headerText}; padding: 0.75rem; text-align: left; border: 1px solid ${themeColors.border}; font-weight: 700; font-size: 0.9rem;">Course</th>
                         </tr></thead><tbody>`;
 
         timetable.forEach((session, index) => {
             const rowBg = index % 2 === 0 ? themeColors.rowBg : themeColors.rowAlt;
             html += `<tr style="background: ${rowBg};">
-                <td style="padding: 1rem; border: 1px solid ${themeColors.border}; font-weight: 600; color: ${themeColors.text};">${session.day}</td>
-                <td style="padding: 1rem; border: 1px solid ${themeColors.border}; color: ${themeColors.text};">${session.startTime} - ${session.endTime}</td>
-                <td style="padding: 1rem; border: 1px solid ${themeColors.border}; font-weight: 600; color: ${themeColors.text};">${session.courseCode}</td>
+                <td style="padding: 0.75rem; border: 1px solid ${themeColors.border}; font-weight: 600; color: ${themeColors.text}; font-size: 0.85rem;">${session.day}</td>
+                <td style="padding: 0.75rem; border: 1px solid ${themeColors.border}; color: ${themeColors.text}; font-size: 0.85rem;">${session.startTime} - ${session.endTime}</td>
+                <td style="padding: 0.75rem; border: 1px solid ${themeColors.border}; font-weight: 600; color: ${themeColors.text}; font-size: 0.85rem;">${session.courseCode}</td>
             </tr>`;
         });
 
-        const headerColor = themeColors.headerBg.split(',')[0].replace('linear-gradient(135deg', '').trim();
+        const headerColor = themeColors.watermark;
         html += `</tbody></table>
-                    <div style="padding: 1.5rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${headerColor}; border-radius: 8px; text-align: center;">
-                        <p style="font-style: italic; color: ${themeColors.text}; font-size: 1rem;">"${motivationalQuote}"</p>
+                    </div>
+                    <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${headerColor}; border-radius: 6px; text-align: center;">
+                        <p style="font-style: italic; color: ${themeColors.text}; font-size: 0.9rem; margin: 0;">"${motivationalQuote}"</p>
                     </div>
                 </div>
             </div>`;
@@ -725,65 +663,53 @@ REMEMBER: A great timetable is challenging but sustainable. Push the student, bu
     }
 
     // ============================================
-    // 12. SHARE FUNCTION
+    // 12. SHARE FUNCTION (IMPROVED)
     // ============================================
     
     function generateShareText(studentName) {
         const name = studentName || 'I';
         
         const shareTexts = [
-            // Version 1: Success Story
-            `🎓 ${name} just crushed exam prep with CramBot's AI-powered study timetable! 
+            `🎓 ${name} just crushed exam prep with CramBot's AI study planner!
 
 No more panic. No more guessing. Just a smart, personalized schedule that actually works.
 
-✨ FREE forever
-🤖 AI analyzes course difficulty
-⏰ Optimized study sessions
-📊 Zero manual planning
+✨ FREE forever | 🤖 AI-powered | ⏰ Science-backed
 
 Stop wasting time planning. Start studying smarter.
 
-👉 Get yours FREE: crambot.com
+👉 crambot.site
 
-#StudySmart #ExamPrep #CramBot #StudentLife #AITools #ProductivityHack`,
+#StudySmart #ExamPrep #CramBot #AITools #ProductivityHack`,
 
-            // Version 2: Problem/Solution
             `😰 Tired of cramming at the last minute?
 
-${name} just discovered CramBot - the AI that builds your perfect study schedule in 10 seconds.
+${name} just discovered CramBot - AI that builds your perfect study schedule in 10 seconds.
 
-Here's what it does:
-✅ Analyzes each course's difficulty
-✅ Calculates optimal study hours
-✅ Spreads sessions throughout the week
-✅ Avoids burnout with smart breaks
+✅ Analyzes course difficulty
+✅ Optimizes study sessions
+✅ Prevents burnout
+✅ 100% FREE
 
-🔥 100% FREE. No signup. No BS.
+Try it: crambot.site
 
-Try it: crambot.com
+#StudyPlanner #ExamSuccess #AIforStudents #CramBot`,
 
-#StudyPlanner #ExamSuccess #AIforStudents #CramBot #NoMoreProcrastination`,
-
-            // Version 3: Social Proof
-            `📚 ${name} just joined thousands of students using CramBot!
+            `📚 ${name} joined thousands using CramBot!
 
 This AI study planner is insane:
-• Generates personalized timetables in seconds
-• Smart scheduling based on course difficulty  
-• Multiple export options (PDF, PNG)
-• Completely FREE (seriously!)
+• Personalized timetables in seconds
+• Smart difficulty-based scheduling
+• Export to PDF/PNG
+• Completely FREE!
 
-Best part? It actually helps you STICK to the plan.
+Best part? It helps you STICK to the plan.
 
-Stop stressing. Start cramming smarter.
+Get yours: crambot.site
 
-Get yours: crambot.com
-
-#CramBot #StudyTips #StudentSuccess #AIProductivity #ExamPrep #FreeTool`
+#CramBot #StudyTips #StudentSuccess #AIProductivity`
         ];
 
-        // Randomly select one share text
         return shareTexts[Math.floor(Math.random() * shareTexts.length)];
     }
 
@@ -802,7 +728,7 @@ Get yours: crambot.com
 
             const dataUrl = await htmlToImage.toPng(element, {
                 quality: 1,
-                backgroundColor: '#ffffff',
+                backgroundColor: THEMES[state.selectedTheme].rowBg,
                 pixelRatio: 2
             });
 
@@ -832,32 +758,26 @@ Get yours: crambot.com
     // ============================================
     
     async function generateTimetable() {
-        // Check rate limit
         const rateCheck = checkRateLimit();
         if (!rateCheck.allowed) {
             showError(rateCheck.message);
             return;
         }
 
-        // Collect form data
         const formData = collectFormData();
         if (!formData) return;
 
-        // Check API key
         if (CONFIG.GROQ_API_KEY === 'PASTE_YOUR_GROQ_KEY_HERE') {
             showError('Please add your Groq API key. Get it from https://console.groq.com');
             return;
         }
 
-        // Generate prompt
         const prompt = generatePrompt(formData);
 
-        // Show loading
         showLoading();
         startLoadingAnimation();
 
         try {
-            // Call API
             const response = await fetch(CONFIG.GROQ_API_URL, {
                 method: 'POST',
                 headers: {
@@ -891,7 +811,6 @@ Get yours: crambot.com
             const data = await response.json();
             const aiResponse = data.choices[0].message.content;
 
-            // Parse response
             let timetableData;
             try {
                 const cleanedResponse = aiResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -901,24 +820,19 @@ Get yours: crambot.com
                 throw new Error('Failed to parse AI response');
             }
 
-            // Validate
             if (!timetableData.timetable || !Array.isArray(timetableData.timetable)) {
                 throw new Error('Invalid timetable format');
             }
 
-            // Store data
             state.currentTimetableData = timetableData;
             state.currentStudentName = formData.studentName;
 
-            // Build and display
             const controlsHTML = buildControls();
             const timetableHTML = buildTimetableHTML(timetableData, formData.studentName);
             elements.timetableDisplay.innerHTML = controlsHTML + timetableHTML;
 
-            // Attach listeners
             attachControlListeners();
 
-            // Update rate limit and show
             updateRateLimit();
             hideLoading();
             showOutput();
@@ -962,7 +876,7 @@ Get yours: crambot.com
     }
 
     // ============================================
-    // 14. EXPORT FUNCTIONS
+    // 14. EXPORT FUNCTIONS (FIXED PDF)
     // ============================================
     
     async function exportAsImage() {
@@ -980,7 +894,7 @@ Get yours: crambot.com
 
             const dataUrl = await htmlToImage.toPng(element, {
                 quality: 1,
-                backgroundColor: '#ffffff',
+                backgroundColor: THEMES[state.selectedTheme].rowBg,
                 pixelRatio: 2
             });
 
@@ -994,7 +908,7 @@ Get yours: crambot.com
         }
     }
 
-    function exportAsPDF() {
+    async function exportAsPDF() {
         const element = document.getElementById('timetable-export');
         if (!element) {
             showError('No timetable to export');
@@ -1002,26 +916,40 @@ Get yours: crambot.com
         }
 
         try {
-            if (typeof window.jspdf === 'undefined') {
-                showError('PDF library not loaded');
+            // Check if libraries are loaded
+            if (typeof htmlToImage === 'undefined') {
+                showError('Export library not loaded. Please refresh the page.');
                 return;
             }
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4');
-            
-            doc.html(element, {
-                callback: function(doc) {
-                    doc.save(`crambot-timetable-${Date.now()}.pdf`);
-                },
-                x: 20,
-                y: 20,
-                width: 550,
-                windowWidth: 800
+            if (typeof window.jspdf === 'undefined') {
+                showError('PDF library not loaded. Please refresh the page.');
+                return;
+            }
+
+            // Convert to image first
+            const dataUrl = await htmlToImage.toPng(element, {
+                quality: 1,
+                backgroundColor: THEMES[state.selectedTheme].rowBg,
+                pixelRatio: 2,
+                width: element.scrollWidth,
+                height: element.scrollHeight
             });
+
+            // Create PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'px',
+                format: [element.scrollWidth, element.scrollHeight]
+            });
+
+            pdf.addImage(dataUrl, 'PNG', 0, 0, element.scrollWidth, element.scrollHeight);
+            pdf.save(`crambot-timetable-${Date.now()}.pdf`);
+
         } catch (error) {
-            console.error('PDF error:', error);
-            showError('Failed to export PDF');
+            console.error('PDF export error:', error);
+            showError('Failed to export PDF. Please try exporting as image instead.');
         }
     }
 
@@ -1030,12 +958,10 @@ Get yours: crambot.com
     // ============================================
     
     function initializeEventListeners() {
-        // Theme toggle
         if (elements.themeToggle) {
             elements.themeToggle.addEventListener('click', toggleTheme);
         }
 
-        // Course management
         if (elements.addCourseBtn) {
             elements.addCourseBtn.addEventListener('click', addCourse);
         }
@@ -1044,7 +970,6 @@ Get yours: crambot.com
             elements.courseList.addEventListener('input', autoUppercaseCourseCode);
         }
 
-        // Duration toggle
         const durationRadios = document.querySelectorAll('input[name="duration"]');
         durationRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
@@ -1054,7 +979,6 @@ Get yours: crambot.com
             });
         });
 
-        // Study hours limit
         if (elements.studyHoursInput) {
             elements.studyHoursInput.addEventListener('input', (e) => {
                 const value = parseInt(e.target.value);
@@ -1063,7 +987,6 @@ Get yours: crambot.com
             });
         }
 
-        // Form submit
         if (elements.timetableForm) {
             elements.timetableForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -1071,7 +994,6 @@ Get yours: crambot.com
             });
         }
 
-        // Export buttons
         if (elements.exportImageBtn) {
             elements.exportImageBtn.addEventListener('click', exportAsImage);
         }
@@ -1091,14 +1013,13 @@ Get yours: crambot.com
     
     function init() {
         initializeTheme();
-        addCourse(); // Add first course
+        addCourse();
         initializeEventListeners();
         
-        console.log('%c🧠 CramBot Ready!', 'color: #6366f1; font-size: 20px; font-weight: bold;');
-        console.log('%cGet Groq API key: https://console.groq.com', 'color: #8b5cf6;');
+        console.log('%c🧠 CramBot Ready (Updated Version)!', 'color: #6366f1; font-size: 20px; font-weight: bold;');
+        console.log('%cAll fixes applied! ✅', 'color: #10b981; font-size: 14px;');
     }
 
-    // Start the app
     init();
 
 })();
