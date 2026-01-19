@@ -2,11 +2,21 @@
     'use strict';
 
     const CONFIG = {
-        GROQ_API_KEY: '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',
+        GROQ_API_KEY: loadAPIKey(),
         GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions',
         MODEL: 'llama-3.3-70b-versatile',
-        RATE_LIMIT_MINUTES: 10
+        RATE_LIMIT_MINUTES: 10,
+        EXPORT_WIDTH: 1200,
+        EXPORT_HEIGHT: 800
     };
+
+    // Load API key from safe location (environment or backend)
+    function loadAPIKey() {
+        if (window.__CRAMBOT_CONFIG && window.__CRAMBOT_CONFIG.apiKey) {
+            return window.__CRAMBOT_CONFIG.apiKey;
+        }
+        return 'sk_live_not_configured';
+    }
 
     const THEMES = {
         classic: {
@@ -482,6 +492,33 @@ Return ONLY valid JSON:
         }
     }
 
+    function showSuccess(message) {
+        // Show temporary success notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            font-weight: 600;
+            max-width: 300px;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Auto-remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+    }
+
     function showOutput() {
         hideAllSections();
         elements.outputSection.classList.add('active');
@@ -688,32 +725,42 @@ No more panic. No more guessing. Just a smart schedule that works.
 
 ✨ FREE | 🤖 AI-powered | ⏰ Science-backed
 
-👉 crambot.site
+👉 https://crambot.site
 
-#StudySmart #CramBot`,
+💡 Pro Tip: Combine with spaced repetition for maximum retention!
+📖 Learn more study techniques: https://crambot.site/blogs.html
+
+#StudySmart #CramBot #ExamPrep`,
 
             `😰 Tired of cramming?
 
 ${name} discovered CramBot - AI that builds perfect study schedules in 10 seconds.
 
-✅ Analyzes difficulty
-✅ Prevents burnout
+✅ Personalized schedules
+✅ Prevents burnout  
 ✅ 100% FREE
+✅ No signup required
 
-crambot.site
+https://crambot.site
+
+💤 Remember: Quality sleep is your secret weapon for exam success!
+🧠 Explore science-backed study techniques in our blog.
 
 #StudyPlanner #CramBot`,
 
-            `📚 ${name} joined thousands using CramBot!
+            `📚 ${name} just generated a game-changing study timetable with CramBot!
 
 • Personalized timetables
 • Smart scheduling
-• Export to PDF/PNG
+• Export to PDF/Image
 • FREE forever!
 
-crambot.site
+https://crambot.site
 
-#CramBot #StudentSuccess`
+🎯 Use the Pomodoro Technique during your study sessions for 25-min focused blocks
+📖 Check out our blog for proven study strategies and wellness tips!
+
+#CramBot #StudentSuccess #SmartStudying`
         ];
 
         return shareTexts[Math.floor(Math.random() * shareTexts.length)];
@@ -904,19 +951,37 @@ crambot.site
                 return;
             }
 
-            const dataUrl = await htmlToImage.toPng(element, {
+            // Create a clone with fixed dimensions for consistent rendering across all screen sizes
+            const clone = element.cloneNode(true);
+            clone.style.width = CONFIG.EXPORT_WIDTH + 'px';
+            clone.style.height = 'auto';
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.visibility = 'hidden';
+            document.body.appendChild(clone);
+
+            // Render the cloned element with fixed dimensions
+            const dataUrl = await htmlToImage.toPng(clone, {
                 quality: 1,
                 backgroundColor: THEMES[state.selectedTheme].rowBg,
-                pixelRatio: 2
+                pixelRatio: 2,
+                width: CONFIG.EXPORT_WIDTH,
+                height: clone.scrollHeight,
+                useCORS: true,
+                allowTaint: true
             });
+
+            document.body.removeChild(clone);
 
             const link = document.createElement('a');
             link.download = `crambot-${Date.now()}.png`;
             link.href = dataUrl;
             link.click();
+            
+            showSuccess('✅ Image downloaded successfully! Save it or share with friends.');
         } catch (error) {
             console.error('Export error:', error);
-            showError(maskError(error));
+            showError('Failed to export image. Please try again.');
         }
     }
 
@@ -933,28 +998,50 @@ crambot.site
                 return;
             }
 
-            const dataUrl = await htmlToImage.toPng(element, {
+            // Create a clone with fixed dimensions for consistent rendering across all screen sizes
+            const clone = element.cloneNode(true);
+            clone.style.width = CONFIG.EXPORT_WIDTH + 'px';
+            clone.style.height = 'auto';
+            clone.style.position = 'absolute';
+            clone.style.left = '-9999px';
+            clone.style.visibility = 'hidden';
+            document.body.appendChild(clone);
+
+            const dataUrl = await htmlToImage.toPng(clone, {
                 quality: 1,
                 backgroundColor: THEMES[state.selectedTheme].rowBg,
-                pixelRatio: 2
+                pixelRatio: 2,
+                width: CONFIG.EXPORT_WIDTH,
+                height: clone.scrollHeight,
+                useCORS: true,
+                allowTaint: true
             });
+
+            document.body.removeChild(clone);
 
             const { jsPDF } = window.jspdf;
             const img = new Image();
             img.src = dataUrl;
             
             img.onload = () => {
+                // A4 dimensions in mm
+                const pdfWidth = 210;
+                const pdfHeight = (img.height / img.width) * pdfWidth;
+                
                 const pdf = new jsPDF({
-                    orientation: img.width > img.height ? 'landscape' : 'portrait',
-                    unit: 'px',
-                    format: [img.width, img.height]
+                    orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
+                    unit: 'mm',
+                    format: [pdfWidth, Math.max(pdfHeight, 297)]
                 });
-                pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
+                
+                pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
                 pdf.save(`crambot-${Date.now()}.pdf`);
+                
+                showSuccess('✅ PDF downloaded successfully! Ready to print or share.');
             };
         } catch (error) {
             console.error('PDF error:', error);
-            showError(maskError(error));
+            showError('Failed to export PDF. Please try again.');
         }
     }
 
