@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CramBot Blog - Study tips, techniques, and strategies to maximize your learning potential.">
+    <meta name="keywords" content="study tips, learning strategies, study techniques, exam preparation, spaced repetition, pomodoro">
+    <title>CramBot Blog - Study Tips & Strategies | CramBot</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#6963EF">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="blogs.css">
+</head>
+<body>
+    
+    <!-- ============================================
+         HEADER / NAVIGATION
+         ============================================ -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-wrapper">
+                <!-- Logo -->
+                <div class="brand">
+                    <a href="./index.html" class="brand-link">
+                        <h1 class="brand-name">
+                            <span class="brand-icon">🧠</span>
+                            CramBot
+                        </h1>
+                        <p class="brand-tagline">AI-Powered Study Planner</p>
+                    </a>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="header-actions">
+                    <!-- Theme Toggle -->
+                    <button 
+                        class="btn-icon theme-toggle" 
+                        id="theme-toggle" 
+                        aria-label="Toggle dark/light mode"
+                        title="Toggle Theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+
+                    <!-- Buy Me a Coffee -->
+                    <a 
+                        href="https://www.buymeacoffee.com/username" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="btn btn-coffee">
+                        <span class="btn-icon-left">☕</span>
+                        <span class="btn-text">Buy me a coffee</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         HERO SECTION
+         ============================================ -->
+    <section class="blog-hero">
+        <div class="container">
+            <h1 class="blog-hero-title">Study Tips & Strategies</h1>
+            <p class="blog-hero-subtitle">Master proven techniques to boost your learning and ace your exams</p>
+        </div>
+    </section>
+
+    <!-- ============================================
+         BLOG DETAIL / LIST VIEW
+         ============================================ -->
+    <main class="blog-main">
+        <div class="container">
+            <div class="blog-layout">
+                <!-- Blog Content Area -->
+                <div class="blog-content-area" id="blog-content">
+                    <!-- Individual blog post will be loaded here -->
+                </div>
+
+                <!-- Blog Sidebar -->
+                <aside class="blog-sidebar">
+                    <!-- Blog List -->
+                    <div class="blog-sidebar-section">
+                        <h3 class="sidebar-title">All Posts</h3>
+                        <ul class="blog-list" id="blog-list">
+                            <!-- Blog items will be generated here -->
+                        </ul>
+                    </div>
+
+                    <!-- Recent Posts Highlight -->
+                    <div class="blog-sidebar-section blog-sidebar-recent">
+                        <h3 class="sidebar-title">Start Here</h3>
+                        <p class="sidebar-text">New to CramBot? Check out our getting started guide and featured study strategies.</p>
+                        <a href="./index.html" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                            <span class="btn-icon-left">🚀</span>
+                            Try CramBot
+                        </a>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="blog-sidebar-section">
+                        <h3 class="sidebar-title">Categories</h3>
+                        <ul class="blog-categories">
+                            <li><a href="#" onclick="filterByCategory('study-technique'); return false;">📚 Study Techniques</a></li>
+                            <li><a href="#" onclick="filterByCategory('time-management'); return false;">⏱️ Time Management</a></li>
+                            <li><a href="#" onclick="filterByCategory('wellness'); return false;">😴 Wellness & Rest</a></li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="site-footer">
+        <div class="container">
+            <!-- Footer Grid -->
+            <div class="footer-grid">
+                <!-- Column 1: Product -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="./index.html">About CramBot</a></li>
+                        <li><a href="./index.html#input-section">How It Works</a></li>
+                        <li><a href="./blogs.html">Study Blog</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 2: Resources -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="./blogs.html">Study Tips</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-credits">
+                    <p>Created with 💜 by <strong>Mukhiteee</strong></p>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="footer-socials">
+                    <a href="https://x.com/mukhiteee" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" title="@mukhiteee on X">
+                        <span>𝕏</span>
+                    </a>
+                    <a href="https://instagram.com/mukhiteee" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="@mukhiteee on Instagram">
+                        <span>📷</span>
+                    </a>
+                    <a href="https://github.com/mukhiteee" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="@mukhiteee on GitHub">
+                        <span>🐙</span>
+                    </a>
+                </div>
+
+                <div class="footer-copyright">
+                    <p>© 2026 CramBot. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         SCRIPTS
+         ============================================ -->
+    <script src="app.js" defer></script>
+    <script src="blogs.js" defer></script>
+</body>
+</html>

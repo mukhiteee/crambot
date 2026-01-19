@@ -9,8 +9,14 @@
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="manifest" href="manifest.json">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#6963EF"> <!-- matches your icon color -->
     
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
@@ -374,7 +380,7 @@
                 <div class="error-icon">❌</div>
                 <h3 class="error-title">Oops! Something went wrong</h3>
                 <p class="error-message" id="error-message"></p>
-                <button class="btn btn-secondary" onclick="location.reload()">
+                <button class="btn btn-secondary" onclick="generateTimetable();">
                     Try Again
                 </button>
             </div>
@@ -438,7 +444,7 @@
             <div class="blog-grid">
                 <!-- Blog Card 1 -->
                 <article class="blog-card">
-                    <a href="#" class="blog-link">
+                    <a href="./blogs.html?post=spaced-repetition" class="blog-link">
                         <div class="blog-image">
                             <span class="blog-emoji">📖</span>
                         </div>
@@ -454,7 +460,7 @@
 
                 <!-- Blog Card 2 -->
                 <article class="blog-card">
-                    <a href="#" class="blog-link">
+                    <a href="./blogs.html?post=pomodoro-technique" class="blog-link">
                         <div class="blog-image">
                             <span class="blog-emoji">⏰</span>
                         </div>
@@ -470,7 +476,7 @@
 
                 <!-- Blog Card 3 -->
                 <article class="blog-card">
-                    <a href="#" class="blog-link">
+                    <a href="./blogs.html?post=active-recall" class="blog-link">
                         <div class="blog-image">
                             <span class="blog-emoji">🧠</span>
                         </div>
@@ -486,7 +492,7 @@
 
                 <!-- Blog Card 4 -->
                 <article class="blog-card">
-                    <a href="#" class="blog-link">
+                    <a href="./blogs.html?post=study-environment" class="blog-link">
                         <div class="blog-image">
                             <span class="blog-emoji">📝</span>
                         </div>
@@ -502,7 +508,7 @@
 
                 <!-- Blog Card 5 -->
                 <article class="blog-card">
-                    <a href="#" class="blog-link">
+                    <a href="./blogs.html?post=sleep-study" class="blog-link">
                         <div class="blog-image">
                             <span class="blog-emoji">💤</span>
                         </div>
@@ -526,47 +532,25 @@
         <div class="container">
             <!-- Footer Grid -->
             <div class="footer-grid">
-                <!-- Column 1: About -->
+                <!-- Column 1: Product -->
                 <div class="footer-column">
-                    <h4 class="footer-heading">CramBot</h4>
+                    <h4 class="footer-heading">Product</h4>
                     <ul class="footer-links">
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#about">About CramBot</a></li>
+                        <li><a href="./index.html#input-section">How It Works</a></li>
+                        <li><a href="./blogs.html">Study Blog</a></li>
                         <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
 
-                <!-- Column 2: Legal -->
-                <div class="footer-column">
-                    <h4 class="footer-heading">Legal</h4>
-                    <ul class="footer-links">
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                        <li><a href="#terms">Terms of Service</a></li>
-                        <li><a href="#disclaimer">Disclaimer</a></li>
-                        <li><a href="#cookies">Cookie Policy</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 3: Resources -->
+                <!-- Column 2: Resources -->
                 <div class="footer-column">
                     <h4 class="footer-heading">Resources</h4>
                     <ul class="footer-links">
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#study-tips">Study Tips</a></li>
-                        <li><a href="#api-docs">API Documentation</a></li>
-                        <li><a href="#changelog">Changelog</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4: Connect -->
-                <div class="footer-column">
-                    <h4 class="footer-heading">Connect</h4>
-                    <ul class="footer-links">
-                        <li><a href="mailto:hello@crambot.com">Email Us</a></li>
-                        <li><a href="#feedback">Feedback</a></li>
-                        <li><a href="https://www.buymeacoffee.com/username">Support Us</a></li>
-                        <li><a href="#newsletter">Newsletter</a></li>
+                        <li><a href="./blogs.html">Study Tips</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
                     </ul>
                 </div>
             </div>
@@ -574,22 +558,19 @@
             <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <div class="footer-credits">
-                    <p>Created with 💜 by <strong>Alex Johnson</strong></p>
+                    <p>Created with 💜 by <strong>Mukhiteee</strong></p>
                 </div>
                 
                 <!-- Social Links -->
                 <div class="footer-socials">
-                    <a href="https://twitter.com/username" target="_blank" rel="noopener" aria-label="Twitter" title="Twitter">
+                    <a href="https://x.com/mukhiteee" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" title="@mukhiteee on X">
                         <span>𝕏</span>
                     </a>
-                    <a href="https://github.com/username" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+                    <a href="https://instagram.com/mukhiteee" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="@mukhiteee on Instagram">
+                        <span>📷</span>
+                    </a>
+                    <a href="https://github.com/mukhiteee" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="@mukhiteee on GitHub">
                         <span>🐙</span>
-                    </a>
-                    <a href="https://linkedin.com/in/username" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
-                        <span>💼</span>
-                    </a>
-                    <a href="https://portfolio.com" target="_blank" rel="noopener" aria-label="Portfolio" title="Portfolio">
-                        <span>🌐</span>
                     </a>
                 </div>
 
