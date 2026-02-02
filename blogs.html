@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CramBot Blog - Study tips, techniques, and strategies to maximize your learning potential.">
-    <meta name="keywords" content="study tips, learning strategies, study techniques, exam preparation, spaced repetition, pomodoro">
-    <title>CramBot Blog - Study Tips & Strategies | CramBot</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="CramBot Blog - Study tips, techniques, and strategies to maximize your learning potential. Learn spaced repetition, Pomodoro, active recall, and more.">
+    <meta name="keywords" content="study tips, learning strategies, study techniques, exam preparation, spaced repetition, pomodoro, active recall, crambot">
+    <meta name="author" content="Mukhiteee">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CramBot Blog - Study Tips & Strategies">
+    <meta property="og:description" content="Master proven techniques to boost your learning and ace your exams.">
+    <meta property="og:image" content="https://crambot.site/images/og-blog.png">
+    <meta property="og:url" content="https://crambot.site/blogs.html">
+    <meta property="og:site_name" content="CramBot">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CramBot Blog - Study Tips & Strategies">
+    <meta name="twitter:description" content="Master proven techniques to boost your learning and ace your exams.">
+    <meta name="twitter:image" content="https://crambot.site/images/og-blog.png">
+    <meta name="twitter:creator" content="@mukhiteee">
+    
+    <title>Study Tips & Strategies | CramBot Blog</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +69,7 @@
 
                     <!-- Buy Me a Coffee -->
                     <a 
-                        href="https://www.buymeacoffee.com/username" 
+                        href="https://www.buymeacoffee.com/mukhiteee" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         class="btn btn-coffee">
@@ -73,28 +92,92 @@
     </section>
 
     <!-- ============================================
-         BLOG DETAIL / LIST VIEW
+         BLOG LISTING
          ============================================ -->
     <main class="blog-main">
         <div class="container">
             <div class="blog-layout">
                 <!-- Blog Content Area -->
-                <div class="blog-content-area" id="blog-content">
-                    <!-- Individual blog post will be loaded here -->
+                <div class="blog-content-area">
+                    <div class="blog-list-view">
+                        
+                        <!-- Blog Post 1: Spaced Repetition -->
+                        <article class="blog-list-item" onclick="window.location.href='./blog/spaced-repetition.html'">
+                            <div class="blog-list-item-thumbnail">📖</div>
+                            <div class="blog-list-item-content">
+                                <h3 class="blog-list-item-title">How to Use Spaced Repetition Effectively</h3>
+                                <p class="blog-list-item-excerpt">Master the art of long-term retention with proven techniques that help you remember more with less effort.</p>
+                                <div class="blog-list-item-meta">
+                                    <div class="blog-list-item-meta-item">📅 January 15, 2026</div>
+                                    <div class="blog-list-item-meta-item">⏱️ 6 min read</div>
+                                    <span class="blog-list-item-category">📚 Study Technique</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Blog Post 2: Pomodoro Technique -->
+                        <article class="blog-list-item" onclick="window.location.href='./blog/pomodoro-technique.html'">
+                            <div class="blog-list-item-thumbnail">⏰</div>
+                            <div class="blog-list-item-content">
+                                <h3 class="blog-list-item-title">The Pomodoro Technique for Students</h3>
+                                <p class="blog-list-item-excerpt">Break your study sessions into focused intervals to maximize productivity and avoid burnout.</p>
+                                <div class="blog-list-item-meta">
+                                    <div class="blog-list-item-meta-item">📅 January 12, 2026</div>
+                                    <div class="blog-list-item-meta-item">⏱️ 5 min read</div>
+                                    <span class="blog-list-item-category">⏱️ Time Management</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Blog Post 3: Active Recall -->
+                        <article class="blog-list-item" onclick="window.location.href='./blog/active-recall.html'">
+                            <div class="blog-list-item-thumbnail">🧠</div>
+                            <div class="blog-list-item-content">
+                                <h3 class="blog-list-item-title">Active Recall: Study Smarter, Not Harder</h3>
+                                <p class="blog-list-item-excerpt">Learn why testing yourself is the most effective way to study for exams.</p>
+                                <div class="blog-list-item-meta">
+                                    <div class="blog-list-item-meta-item">📅 January 10, 2026</div>
+                                    <div class="blog-list-item-meta-item">⏱️ 7 min read</div>
+                                    <span class="blog-list-item-category">📚 Study Technique</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Blog Post 4: Study Environment -->
+                        <article class="blog-list-item" onclick="window.location.href='./blog/study-environment.html'">
+                            <div class="blog-list-item-thumbnail">📝</div>
+                            <div class="blog-list-item-content">
+                                <h3 class="blog-list-item-title">Creating the Perfect Study Environment</h3>
+                                <p class="blog-list-item-excerpt">Optimize your workspace for maximum focus and minimal distractions.</p>
+                                <div class="blog-list-item-meta">
+                                    <div class="blog-list-item-meta-item">📅 January 8, 2026</div>
+                                    <div class="blog-list-item-meta-item">⏱️ 6 min read</div>
+                                    <span class="blog-list-item-category">😴 Wellness</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Blog Post 5: Sleep & Study -->
+                        <article class="blog-list-item" onclick="window.location.href='./blog/sleep-study.html'">
+                            <div class="blog-list-item-thumbnail">💤</div>
+                            <div class="blog-list-item-content">
+                                <h3 class="blog-list-item-title">Why Sleep is Your Secret Weapon</h3>
+                                <p class="blog-list-item-excerpt">Discover how proper rest dramatically improves memory consolidation and exam performance.</p>
+                                <div class="blog-list-item-meta">
+                                    <div class="blog-list-item-meta-item">📅 January 5, 2026</div>
+                                    <div class="blog-list-item-meta-item">⏱️ 8 min read</div>
+                                    <span class="blog-list-item-category">😴 Wellness</span>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
                 </div>
 
                 <!-- Blog Sidebar -->
                 <aside class="blog-sidebar">
-                    <!-- Blog List -->
+                    <!-- Start Here -->
                     <div class="blog-sidebar-section">
-                        <h3 class="sidebar-title">All Posts</h3>
-                        <ul class="blog-list" id="blog-list">
-                            <!-- Blog items will be generated here -->
-                        </ul>
-                    </div>
-
-                    <!-- Recent Posts Highlight -->
-                    <div class="blog-sidebar-section blog-sidebar-recent">
                         <h3 class="sidebar-title">Start Here</h3>
                         <p class="sidebar-text">New to CramBot? Check out our getting started guide and featured study strategies.</p>
                         <a href="./index.html" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
@@ -107,10 +190,16 @@
                     <div class="blog-sidebar-section">
                         <h3 class="sidebar-title">Categories</h3>
                         <ul class="blog-categories">
-                            <li><a href="#" onclick="filterByCategory('study-technique'); return false;">📚 Study Techniques</a></li>
-                            <li><a href="#" onclick="filterByCategory('time-management'); return false;">⏱️ Time Management</a></li>
-                            <li><a href="#" onclick="filterByCategory('wellness'); return false;">😴 Wellness & Rest</a></li>
+                            <li><a href="#" onclick="filterCategory('study-technique'); return false;">📚 Study Techniques</a></li>
+                            <li><a href="#" onclick="filterCategory('time-management'); return false;">⏱️ Time Management</a></li>
+                            <li><a href="#" onclick="filterCategory('wellness'); return false;">😴 Wellness & Rest</a></li>
                         </ul>
+                    </div>
+
+                    <!-- About -->
+                    <div class="blog-sidebar-section">
+                        <h3 class="sidebar-title">About This Blog</h3>
+                        <p class="sidebar-text">Evidence-based study tips and strategies to help you learn better, remember more, and ace your exams.</p>
                     </div>
                 </aside>
             </div>
@@ -176,7 +265,29 @@
     <!-- ============================================
          SCRIPTS
          ============================================ -->
-    <script src="app.js" defer></script>
-    <script src="blogs.js" defer></script>
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = document.querySelector('.theme-icon');
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('crambot-theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('crambot-theme', newTheme);
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Category filter (optional - you can implement this later)
+        function filterCategory(category) {
+            alert('Category filter: ' + category + ' (feature coming soon!)');
+        }
+    </script>
 </body>
 </html>
