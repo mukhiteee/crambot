@@ -1068,6 +1068,6 @@ but HOW to study effectively for long-term success.
 END OF DOCUMENTATION
 ================================================================================
 
-For questions or updates: crambot.site
+For questions or updates: crambot.netlify.app
 Version: 1.0
 Last Updated: January 2026

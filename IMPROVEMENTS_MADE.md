@@ -32,7 +32,7 @@
   - Pomodoro Technique mention
   - Spaced Repetition tips
   - Sleep importance reminder
-- Proper URLs (https://crambot.site)
+- Proper URLs (https://crambot.netlify.app)
 - Social-friendly hashtags
 - Fallback for browsers without share API
 - Success notification after share

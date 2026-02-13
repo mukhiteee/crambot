@@ -206,7 +206,7 @@ git push origin v1.0.0
 # On Vercel/Netlify/Hosting Platform
 GROQ_API_KEY = your_api_key_here
 NODE_ENV = production
-SITE_URL = https://crambot.site (optional)
+SITE_URL = https://crambot.netlify.app (optional)
 ```
 
 ### Test Commands

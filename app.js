@@ -656,7 +656,7 @@ REMEMBER: University students need 2-3 hours of study per credit hour. Be realis
                 <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${themeColors.watermark}; border-radius: 6px;">
                     <p style="font-style: italic; color: ${themeColors.text}; margin: 0; text-align: center;">"${motivationalQuote}"</p>
                 </div>
-                <div style="text-align: right; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.7; margin-top: 1rem;">CramBot.site</div>
+                <div style="text-align: right; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.7; margin-top: 1rem;">crambot.netlify.app</div>
             </div>`;
 
         return html;
@@ -692,7 +692,7 @@ REMEMBER: University students need 2-3 hours of study per credit hour. Be realis
                 <div style="padding: 1rem; background: ${themeColors.rowAlt}; border-left: 4px solid ${themeColors.watermark}; border-radius: 6px;">
                     <p style="font-style: italic; color: ${themeColors.text}; margin: 0; text-align: center;">"${motivationalQuote}"</p>
                 </div>
-                <div style="text-align: right; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.7; margin-top: 1rem;">CramBot.site</div>
+                <div style="text-align: right; font-size: 0.7rem; color: ${themeColors.watermark}; opacity: 0.7; margin-top: 1rem;">crambot.netlify.app</div>
             </div>`;
 
         return html;
@@ -744,7 +744,7 @@ REMEMBER: University students need 2-3 hours of study per credit hour. Be realis
 
 ✨ FREE | 🤖 AI-powered | ⏰ Science-backed
 
-👉 crambot.site
+👉 crambot.netlify.app
 
 #StudySmart #CramBot`,
 
@@ -756,7 +756,7 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
 ✅ Prevents burnout
 ✅ FREE
 
-crambot.site`,
+    crambot.netlify.app`,
 
             `📚 ${name} using CramBot!
 
@@ -765,7 +765,7 @@ crambot.site`,
 • Export PDF/PNG
 • FREE!
 
-crambot.site
+    crambot.netlify.app
 
 #CramBot`
         ];

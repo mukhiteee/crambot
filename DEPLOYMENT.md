@@ -236,7 +236,7 @@ async function loadConfiguration() {
 ```nginx
 server {
     listen 443 ssl http2;
-    server_name crambot.site;
+    server_name crambot.netlify.app;
 
     ssl_certificate /etc/ssl/certs/your_cert.pem;
     ssl_certificate_key /etc/ssl/private/your_key.pem;
@@ -301,7 +301,7 @@ For your backend proxy, configure CORS:
 const cors = require('cors');
 
 app.use(cors({
-    origin: ['https://crambot.site', 'https://www.crambot.site'],
+    origin: ['https://crambot.netlify.app', 'https://www.crambot.netlify.app'],
     credentials: true
 }));
 ```
