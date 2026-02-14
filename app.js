@@ -11,7 +11,7 @@
     'use strict';
 
     const CONFIG = {
-        NETLIFY_FUNCTION_URL: '/netlify/functions/generate-timetable.js',
+        NETLIFY_FUNCTION_URL: '/.netlify/functions/generate-timetable',
         MODEL: 'llama-3.3-70b-versatile',
         RATE_LIMIT_MINUTES: 5
     };
