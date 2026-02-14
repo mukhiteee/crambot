@@ -1,0 +1,14 @@
+{
+  "name": "crambot",
+  "version": "1.0.0",
+  "description": "AI-Powered Study Planner",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  },
+  "author": "Mukhiteee",
+  "license": "MIT"
+}

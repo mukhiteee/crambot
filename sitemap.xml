@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- Homepage / Main App -->
+  <url>
+    <loc>https://crambot.site/</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Main App (if index.html is explicitly accessed) -->
+  <url>
+    <loc>https://crambot.site/index.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Blog Listing Page -->
+  <url>
+    <loc>https://crambot.site/blogs.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Blog Post 1: Spaced Repetition -->
+  <url>
+    <loc>https://crambot.site/blog/spaced-repetition.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post 2: Pomodoro Technique -->
+  <url>
+    <loc>https://crambot.site/blog/pomodoro-technique.html</loc>
+    <lastmod>2026-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post 3: Active Recall -->
+  <url>
+    <loc>https://crambot.site/blog/active-recall.html</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post 4: Study Environment -->
+  <url>
+    <loc>https://crambot.site/blog/study-environment.html</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog Post 5: Sleep & Study -->
+  <url>
+    <loc>https://crambot.site/blog/sleep-study.html</loc>
+    <lastmod>2026-01-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

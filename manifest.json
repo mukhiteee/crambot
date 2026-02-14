@@ -5,7 +5,7 @@
         "version": "1.0.0",
         "description": "AI-powered study timetable generator for students. Create personalized exam schedules in seconds.",
         "author": "Mukhiteee",
-        "homepage_url": "https://crambot.com",
+        "homepage_url": "https://crambot.netlify.app",
         
         "icons": [
             {

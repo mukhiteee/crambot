@@ -11,8 +11,7 @@
     'use strict';
 
     const CONFIG = {
-        GROQ_API_KEY: '',
-        GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions',
+        NETLIFY_FUNCTION_URL: '/.netlify/functions/generate-timetable',
         MODEL: 'llama-3.3-70b-versatile',
         RATE_LIMIT_MINUTES: 5
     };
@@ -919,20 +918,14 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
         startLoadingAnimation();
 
         try {
-            const response = await fetch(CONFIG.GROQ_API_URL, {
+            const response = await fetch(CONFIG.NETLIFY_FUNCTION_URL, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: CONFIG.MODEL,
-                    messages: [
-                        { role: "system", content: "You are Dr. Sarah Chen. Generate JSON only." },
-                        { role: "user", content: prompt }
-                    ],
-                    temperature: 0.7,
-                    response_format: { type: "json_object" }
+                    prompt: prompt,
+                    model: CONFIG.MODEL
                 })
             });
 

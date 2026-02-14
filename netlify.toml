@@ -1,0 +1,24 @@
+# Netlify Configuration File
+
+[build]
+  # Netlify will automatically detect and build functions
+  functions = "netlify/functions"
+
+[functions]
+  # Function will be available at /.netlify/functions/generate-timetable
+  directory = "netlify/functions"
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+    X-XSS-Protection = "1; mode=block"
+
+# Redirect rules (optional)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
