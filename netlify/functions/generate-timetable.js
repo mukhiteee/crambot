@@ -1,20 +1,6 @@
-// ============================================
-// DEBUG VERSION - NETLIFY FUNCTION
-// This will help us see what's wrong
-// ============================================
-
 const fetch = require('node-fetch');
 
 exports.handler = async (event, context) => {
-  // DETAILED LOGGING
-  console.log('=== FUNCTION CALLED ===');
-  console.log('Method:', event.httpMethod);
-  console.log('Environment variables available:', Object.keys(process.env).length);
-  console.log('GROQ_API_KEY exists?', !!process.env.GROQ_API_KEY);
-  console.log('GROQ_API_KEY length:', process.env.GROQ_API_KEY?.length);
-  console.log('GROQ_API_KEY first 10 chars:', process.env.GROQ_API_KEY?.substring(0, 10));
-
-  // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -23,7 +9,6 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Get the prompt from the request body
     const { prompt, model = 'llama-3.3-70b-versatile' } = JSON.parse(event.body);
 
     if (!prompt) {
@@ -33,28 +18,12 @@ exports.handler = async (event, context) => {
       };
     }
 
-    console.log('Prompt received, length:', prompt.length);
-    console.log('Model:', model);
+    const apiKey = process.env.GROQ_API_KEY || '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';
 
-    // Check if API key exists BEFORE calling Groq
-    if (!process.env.GROQ_API_KEY) {
-      console.error('❌ GROQ_API_KEY is not set!');
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ 
-          error: 'API key not configured',
-          debug: 'GROQ_API_KEY environment variable is missing'
-        })
-      };
-    }
-
-    console.log('Calling Groq API...');
-
-    // Call Groq API
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -68,29 +37,18 @@ exports.handler = async (event, context) => {
       })
     });
 
-    console.log('Groq API response status:', response.status);
-
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Groq API error:', errorData);
       return {
         statusCode: response.status,
         body: JSON.stringify({ 
-          error: errorData.error?.message || 'API request failed',
-          details: errorData,
-          debug: {
-            status: response.status,
-            keyProvided: !!process.env.GROQ_API_KEY,
-            keyLength: process.env.GROQ_API_KEY?.length
-          }
+          error: errorData.error?.message || 'API request failed' 
         })
       };
     }
 
     const data = await response.json();
-    console.log('✅ Success! Response received');
 
-    // Return the response
     return {
       statusCode: 200,
       headers: {
@@ -102,13 +60,12 @@ exports.handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('❌ Function error:', error);
+    console.error('Function error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ 
         error: 'Internal server error',
-        message: error.message,
-        stack: error.stack
+        message: error.message 
       })
     };
   }
