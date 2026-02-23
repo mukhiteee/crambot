@@ -11,7 +11,7 @@
     'use strict';
 
     const CONFIG = {
-        NETLIFY_FUNCTION_URL: '/.netlify/functions/generate-timetable', 
+        WORKER_URL: 'https://crambot.mukhiteee.workers.dev',  // ← Your worker URL
         MODEL: 'llama-3.3-70b-versatile',
         RATE_LIMIT_MINUTES: 5
     };
@@ -918,13 +918,19 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
         startLoadingAnimation();
 
         try {
-            const response = await fetch(CONFIG.NETLIFY_FUNCTION_URL, {
+            const response = await fetch(CONFIG.WORKER_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    prompt: prompt,
+                    studentName: formData.studentName,
+                    courses: formData.courses,
+                    examDate: formData.examDate,
+                    currentDate: formData.currentDate,
+                    studyLevel: formData.studyLevel,
+                    studyHoursPerDay: formData.studyHoursPerDay,
+                    studyTimePreference: formData.studyTimePreference,
                     model: CONFIG.MODEL
                 })
             });

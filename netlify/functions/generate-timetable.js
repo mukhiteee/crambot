@@ -18,8 +18,6 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const apiKey = process.env.GROQ_API_KEY || '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';
-
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
