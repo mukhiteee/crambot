@@ -909,37 +909,28 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
     }
 }
 
-    // ============================================
-    // FIXED: generateTimetableFromData function
-    // ONLY THIS ONE FUNCTION NEEDS TO CHANGE!
-    // Everything else stays EXACTLY the same
-    // ============================================
-
     async function generateTimetableFromData(formData) {
         state.currentFormData = formData;
 
-        // REMOVED: const prompt = generatePrompt(formData);
-        // Worker will build the prompt!
+        const prompt = generatePrompt(formData);
 
         showLoading();
         startLoadingAnimation();
 
         try {
-            // FIXED: Send data that matches what Worker expects
             const response = await fetch(CONFIG.WORKER_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    // Send EXACT fields that generatePrompt() expects
+                    studentName: formData.studentName,
                     courses: formData.courses,
-                    studyHours: formData.studyHours,
-                    excludedDays: formData.excludedDays,
-                    studyTime: formData.studyTime,
-                    duration: formData.duration,
-                    startDate: formData.startDate,
-                    endDate: formData.endDate,
+                    examDate: formData.examDate,
+                    currentDate: formData.currentDate,
+                    studyLevel: formData.studyLevel,
+                    studyHoursPerDay: formData.studyHoursPerDay,
+                    studyTimePreference: formData.studyTimePreference,
                     model: CONFIG.MODEL
                 })
             });
@@ -952,9 +943,6 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
             }
 
             const data = await response.json();
-            console.log('Response from worker:', data);
-
-            // Parse response (same as before)
             const aiResponse = data.choices[0].message.content;
 
             let timetableData;
