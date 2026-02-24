@@ -13,7 +13,7 @@
     const CONFIG = {
         WORKER_URL: 'https://crambot.mukhiteee.workers.dev',  // ← Your worker URL
         MODEL: 'llama-3.3-70b-versatile',
-        RATE_LIMIT_MINUTES: 5
+        RATE_LIMIT_MINUTES: 3
     };
 
     const THEMES = {
