@@ -1,4 +1,4 @@
-// ============================================
+my// ============================================
 // CRAMBOT - FINAL WORKING VERSION v3.0
 // ✅ University algorithm (120 min/credit)
 // ✅ Mobile export ACTUALLY WORKS
@@ -764,7 +764,7 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
 • Export PDF/PNG
 • FREE!
 
-    crambot.netlify.app
+    crambot2.netlify.app
 
 #CramBot`
         ];
