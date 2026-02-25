@@ -40,6 +40,7 @@
     
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="author-card.css">
     
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js" defer></script>
@@ -538,6 +539,58 @@
                         </div>
                     </a>
                 </article>
+            </div>
+        </div>
+    </section>
+
+        <!-- ============================================
+        MEET THE CREATOR SECTION
+        Add this block just above the FOOTER section
+        ============================================ -->
+    <section class="creator-section">
+        <div class="container">
+            <div class="creator-card">
+
+                <!-- Left: Decorative avatar / image placeholder -->
+                <div class="creator-card__avatar">
+                    <!-- 
+                        OPTIONAL: Replace this div with an <img> tag if you have a photo.
+                        e.g. <img src="./images/mukhiteee.jpg" alt="Mukhiteee" />
+                    -->
+                    <div class="creator-avatar-placeholder">
+                        <span class="creator-avatar-initials">MA</span>
+                    </div>
+                    <div class="creator-avatar-glow"></div>
+                </div>
+
+                <!-- Middle: Text content -->
+                <div class="creator-card__content">
+                    <span class="creator-card__label">👤 Meet the Creator</span>
+                    <h3 class="creator-card__name">Mukhtar Abdulhamid
+                        <span class="creator-card__alias">— Mukhiteee</span>
+                    </h3>
+                    <p class="creator-card__bio">
+                        A Computer Engineering student at Ahmadu Bello University who got tired of studying without a plan. 
+                        I built CramBot because I lived the struggle — biased scheduling, tunnel vision on one course, 
+                        no clear roadmap. I'm a problem solver at heart, and this is my solution for all of us.
+                    </p>
+                    <div class="creator-card__tags">
+                        <span class="creator-tag">🎓 ABU Nigeria</span>
+                        <span class="creator-tag">💻 Web Developer</span>
+                        <span class="creator-tag">⚽ Liverpool FC</span>
+                        <span class="creator-tag">📚 Non-fiction reader</span>
+                    </div>
+                </div>
+
+                <!-- Right: CTA -->
+                <div class="creator-card__cta">
+                    <a href="./author.html" class="btn btn-primary creator-cta-btn">
+                        <span>Read My Full Story</span>
+                        <span class="creator-cta-arrow">→</span>
+                    </a>
+                    <p class="creator-cta-sub">The story behind CramBot</p>
+                </div>
+
             </div>
         </div>
     </section>
