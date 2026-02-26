@@ -15,8 +15,8 @@
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Meet the Creator: Mukhtar Abdulhamid (Mukhiteee)">
     <meta property="og:description" content="The story behind CramBot — how a Nigerian Computer Engineering student turned his own study struggles into a solution for all of us.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=630&fit=crop">
-    <meta property="og:url" content="https://crambot.netlify.app/blog/about-the-creator.html">
+    <meta property="og:image" content="https://crambot2.netlify.app/screenshot-2.png">
+    <meta property="og:url" content="https://crambot.netlify.app/blog/author.html">
     <meta property="og:site_name" content="CramBot">
     <meta property="profile:first_name" content="Mukhtar">
     <meta property="profile:last_name" content="Abdulhamid">
@@ -26,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Meet the Creator: Mukhtar Abdulhamid (Mukhiteee)">
     <meta name="twitter:description" content="The story behind CramBot — how a Nigerian Computer Engineering student turned his own study struggles into a solution for all of us.">
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=630&fit=crop">
+    <meta name="twitter:image" content="https://crambot2.netlify.app/screenshot-2.png">
     <meta name="twitter:creator" content="@mukhiteee">
     <meta name="twitter:site" content="@mukhiteee">
 
@@ -39,7 +39,7 @@
     <meta property="article:tag" content="Mukhiteee">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://crambot.netlify.app/blog/about-the-creator.html">
+    <link rel="canonical" href="https://crambot.netlify.app/blog/author.html">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <meta name="theme-color" content="#6963EF">
 
@@ -51,10 +51,9 @@
     <!-- Site-wide styles -->
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../blogs.css">
-    <link rel="stylesheet" href="../author.css">
 
     <!-- This page's unique styles -->
-    <link rel="stylesheet" href="about-creator.css">
+    <link rel="stylesheet" href="../author.css">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -420,8 +419,8 @@
                     <h4 class="footer-heading">Resources</h4>
                     <ul class="footer-links">
                         <li><a href="../blogs.html">Study Tips</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
@@ -467,7 +466,7 @@
         function sharePost() {
             const url = window.location.href;
             const title = 'Meet the Creator: Mukhtar Abdulhamid (Mukhiteee)';
-            const text = 'The story behind CramBot — how a Nigerian CS student turned his own study struggle into a tool that helps thousands.';
+            const text = 'The story behind CramBot — how a Nigerian student turned his own study struggle into a tool that helps thousands.';
             if (navigator.share) {
                 navigator.share({ title, text, url }).catch(() => {});
             } else {
