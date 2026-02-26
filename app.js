@@ -16,6 +16,58 @@
         RATE_LIMIT_MINUTES: 3
     };
 
+    // ============================================
+    // AD CONFIGURATION - ADSTERRA
+    // ============================================
+
+    const AD_CONFIG = {
+        // ✅ REPLACE THESE WITH YOUR ACTUAL ADSTERRA LINKS
+        adLinks: [
+            'https://www.effectivegatecpm.com/e7fsd10u?key=14604285b2660ed5ef67fc20fc7ab179',
+        ],
+        
+        // Show ad every 2 downloads (change if you want)
+        showAdEveryNDownloads: 1,
+        
+        // Keep ad open for 3 seconds minimum
+        adDisplayTime: 3000
+    };
+
+    // Download tracking
+    function getDownloadCount() {
+        return parseInt(localStorage.getItem('crambot-download-count') || '0');
+    }
+
+    function incrementDownloadCount() {
+        const count = getDownloadCount() + 1;
+        localStorage.setItem('crambot-download-count', count.toString());
+        return count;
+    }
+
+    function shouldShowAd() {
+        const count = getDownloadCount();
+        return count % AD_CONFIG.showAdEveryNDownloads === 0;
+    }
+
+    function getRandomAdLink() {
+        const randomIndex = Math.floor(Math.random() * AD_CONFIG.adLinks.length);
+        return AD_CONFIG.adLinks[randomIndex];
+    }
+
+    function showInterstitialAd() {
+        const adLink = getRandomAdLink();
+        
+        try {
+            const adWindow = window.open(adLink, '_blank');
+            
+            if (!adWindow || adWindow.closed || typeof adWindow.closed === 'undefined') {
+                console.log('Ad popup was blocked.');
+            }
+        } catch (error) {
+            console.error('Could not open ad:', error);
+        }
+    }
+
     const THEMES = {
         classic: {
             name: 'Classic Purple',
@@ -626,20 +678,21 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
     const original = document.getElementById('timetable-export');
     if (!original) return;
 
-    // 1. Create a hidden container for the capture
+    // ✅ INCREMENT DOWNLOAD COUNT
+    const downloadCount = incrementDownloadCount();
+    console.log(`Download #${downloadCount}`);
+
     const container = document.createElement('div');
     container.style.position = 'absolute';
     container.style.left = '-9999px';
     container.style.top = '0';
-    container.style.width = '1200px'; // Force desktop width
+    container.style.width = '1200px';
     document.body.appendChild(container);
 
-    // 2. Clone the timetable into the hidden container
     const clone = original.cloneNode(true);
     container.appendChild(clone);
 
     try {
-        // 3. Capture the clone
         const dataUrl = await htmlToImage.toPng(clone, {
             pixelRatio: 3,
             backgroundColor: THEMES[state.selectedTheme].rowBg,
@@ -649,10 +702,18 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
         link.download = `crambot-${Date.now()}.png`;
         link.href = dataUrl;
         link.click();
+
+        // ✅ SHOW AD AFTER DOWNLOAD STARTS
+        if (shouldShowAd()) {
+            // console.log('✅ Showing ad...');
+            setTimeout(() => showInterstitialAd(), 500);
+        } else {
+            // console.log('⏭️ Skipping ad this time');
+        }
+
     } catch (error) {
         console.error(error);
     } finally {
-        // 4. Clean up
         document.body.removeChild(container);
     }
 }
@@ -692,8 +753,11 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
         return;
     }
 
+    // ✅ ADD THIS LINE
+    const downloadCount = incrementDownloadCount();
+    console.log(`Download #${downloadCount}`);
+
     try {
-        // Use our helper to get the "Desktop" version
         const dataUrl = await captureFullTimetable();
 
         const { jsPDF } = window.jspdf;
@@ -709,6 +773,14 @@ ${name} discovered CramBot - AI study planner in 10 seconds.
             
             pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
             pdf.save(`crambot-timetable-${Date.now()}.pdf`);
+
+            // ✅ ADD THESE LINES
+            if (shouldShowAd()) {
+                // console.log('✅ Showing ad...');
+                setTimeout(() => showInterstitialAd(), 500);
+            } else {
+                // console.log('⏭️ Skipping ad this time');
+            }
         };
     } catch (error) {
         console.error('PDF error:', error);
